@@ -34,9 +34,10 @@ class Node {
       faceColor = this.faceColor2; //color(100,100,200);
       textColor = edgeColor;
     } else {
-      let darkGray = 50;
+      let darkGray = color(50);
       borderColor = darkGray;
-      edgeColor = color(red(borderColor), green(borderColor), blue(borderColor), 100);
+      edgeColor = color(red(borderColor), green(borderColor), blue(borderColor));
+      // edgeColor.setAlpha(100);
       faceColor = this.faceColor;//255;
       textColor = darkGray;
     }
@@ -44,7 +45,7 @@ class Node {
     //noFill()
     strokeWeight(5);
     stroke(0);
-    
+
     let arrowCurve = 0.125
 
     this.children.forEach((c) => {
@@ -69,7 +70,7 @@ class Node {
 
     stroke(borderColor);
     fill(faceColor);
-    circle(this.x, this.y, this.r * 2);
+    circle(this.x, this.y, this.r);
 
     strokeWeight(1);
     stroke(textColor);
@@ -100,7 +101,7 @@ class Node {
       this.faceColor2 = lerpColor(
         color(0, 0, 255),
         color(240, 240, 255),
-        (2 * (nodes.length - depth)) / nodes.length
+        ((nodes.length - depth)) / nodes.length
       );
       this.children.forEach((c) => {
         if (!c.highlighted) {
@@ -138,11 +139,11 @@ class Node {
   //   this.y += xy.y;
   // }
   force() {
-    let forceSep = 1;
+    let forceSep = 8; //3 is cozy, 5-10 is spacious
     let attractAccel = 0.02;
     let repelAccel = 0.6 / nodes.length;
 
-    //attract to within a radius
+    //attract to within a radius of center
     let dc = p5.Vector.sub(center, this.xy());
     let targDist = 100;
     // dc.setMag(  -0.00001* dc.mag());
@@ -168,7 +169,7 @@ class Node {
     //repel from all
     nodes.forEach((n) => {
       let dv = p5.Vector.sub(n.xy(), this.xy());
-      let targDist = 3 * (this.r + n.r);
+      let targDist = forceSep * (this.r + n.r);
       dv.setMag(repelAccel * constrain(dv.mag() - targDist, -999999, 0));
 
       this.accel(dv);
