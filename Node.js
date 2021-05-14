@@ -108,13 +108,13 @@ class Node {
     return this.highlighted;
   }
   highlightChildren(depth) {
-      let propogationDelay = 400;
+      let propogationDelay = 300;
 
     if (depth < 0) {
-      console.log("done-" + depth);
+      // console.log("done-" + depth);
       return;
     }
-    console.log("." + depth);
+    // console.log("." + depth);
 
     if (this.highlighted) {
       this.currentFaceColor = lerpColor(
@@ -129,7 +129,7 @@ class Node {
             c.highlighted = true;
             c.highlightChildren(depth - 1);
             // c.faceColor = color(0,0,255)
-            console.log(this.name + c.name);
+            // console.log(this.name + c.name);
         }, propogationDelay);
         }
         // else {

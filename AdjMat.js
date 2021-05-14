@@ -81,9 +81,9 @@ class AdjMat{
         let tileW = this.tileW;
         push();
         translate(this.x, this.y);
-        let x,y;
-        let x0 = -this.nNodes/2;
-        let y0 = -this.nNodes/2;
+        let xy;
+        // let x0 = -this.nNodes/2;
+        // let y0 = -this.nNodes/2;
 
         rectMode(CENTER);
         textAlign(CENTER);
@@ -92,34 +92,64 @@ class AdjMat{
         {
             for (let j=0; j<this.nNodes; j++)
             {
-                x = i+x0;
-                y = j+y0;
-
+                // x = i+x0;
+                // y = j+y0;
+                xy = this.indexToPosition(i,j);
                 // this should really use the color associated with edge i->j
                 clr = (this.mat[i][j]) ? nodes[i].currentFaceColor : color(150);
 
                 fill(clr);
                 stroke(0);
                 strokeWeight(2);
-                rect(x*tileW, y*tileW, tileW, tileW);
+                rect(xy.x, xy.y, tileW, tileW);
             }
 
             stroke(nodes[0].borderColor)
             strokeWeight(0);
 
-
+            let xyN1 = this.indexToPosition(-1,-1);
             fill(nodes[0].borderColor)
-            text(nodes[i].name, x*tileW, (y0-1)*tileW)
-            text(nodes[i].name, (x0-1)*tileW, (x)*tileW)
+            text(nodes[i].name, xy.x, xyN1.y)
+            text(nodes[i].name, xyN1.x, xy.x)
         }
         fill(240)
         strokeWeight(0)
-        text("from", -tileW/2, (y0-2)*tileW)
-        text("to", (x0-2)*tileW, -tileW/2);
+        let xyN2 = this.indexToPosition(-2,-2);
+
+        text("from", -tileW/2, xyN2.y)
+        text("to", xyN2.x, -tileW/2);
         pop();
+    }
+    indexToPosition(i,j)
+    {
+        let x,y;
+        let x0 = -this.nNodes/2;
+        let y0 = -this.nNodes/2;
+        x = (i+x0)*this.tileW;
+        y = (j+y0)*this.tileW;
+        return createVector(x,y);
+    }
+    positionToIndex(x,y)
+    {
+        let i,j;
+        let x0 = -this.nNodes/2;
+        let y0 = -this.nNodes/2;
+        i = floor((x-this.x+this.tileW/2)/this.tileW-x0);
+        j = floor((y-this.y+this.tileW/2)/this.tileW-y0);
+        return createVector(i,j);
     }
     click(cX, cY)
     {
+        let cij = this.positionToIndex(cX,cY);
+        if ((cij.x>=0) && (cij.x<this.nNodes) && (cij.y>=0) && (cij.y<this.nNodes))
+        {
+
+            this.mat[cij.x][cij.y] = !this.mat[cij.x][cij.y];
+            // console.log(cij.x + " " +cij.y)
+            linkNodesViaAdjacency(nodeMat.mat);
+        }
+
+        // if
         //for all tiles
     }
 

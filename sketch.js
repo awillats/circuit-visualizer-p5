@@ -68,6 +68,7 @@ function mousePressed() {
     nodes.forEach((n) => (n.highlighted = false));
   } else {
     nodes.forEach((n) => n.select(mouseX, mouseY));
+    nodeMat.click(mouseX,mouseY);
 
   }
   // nodes.forEach(n=>n.highlightChildren())
