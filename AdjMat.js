@@ -18,11 +18,13 @@ class AdjMat{
                 mat[i][j] = 0;
             }
         }
+        this.mat = mat;
         return mat;
     }
-    createSparseAdj(pConnect=this.nNodes/4)
+    createSparseAdj(pConnect=1.5/this.nNodes)
     {
         let mat = [];
+        // console.log(pConnect)
         for (let i=0; i< this.nNodes; i++)
         {
             mat[i] = [];
@@ -31,6 +33,9 @@ class AdjMat{
                 mat[i][j] = (random(1) < pConnect) ? 1 : 0;
             }
         }
+        this.mat = mat;
+        // console.log(mat)
+        this.binaryStr = this.matToBinary();
         return mat;
     }
 
@@ -39,15 +44,15 @@ class AdjMat{
         //loops (forward/backward) through binary array
         //placing elements in (column/row)-major order
         let mat = this.createBlankMat();
-        console.log(mat)
-        console.log(bin)
+        // console.log(mat)
+        // console.log(bin)
         for (let bi=0; bi<bin.length; bi++)
         {
             let i = bi % this.nNodes;
             let j = floor(bi/ this.nNodes) % this.nNodes;
             mat[i][j] = parseInt(bin[bi],10);
         }
-        console.log(mat)
+        // console.log(mat)
         this.mat = mat;
         this.binaryStr = bin;
         return mat;

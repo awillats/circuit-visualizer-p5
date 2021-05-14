@@ -46,11 +46,11 @@ function keyPressed(){
     console.log(key)
     if (key===" ")
     {
-        let maxNum = pow(2,nodes.length*nodes.length);
-         let dec = floor(random(maxNum));
-        //
-        let bStr = flipStr(dec.toString(2));
-        nodeMat.binaryToMat(bStr);
+        // let maxNum = pow(2,nodes.length*nodes.length);
+        //  let dec = floor(random(maxNum));
+        // let bStr = flipStr(dec.toString(2));
+        // nodeMat.binaryToMat(bStr);
+        nodeMat.createSparseAdj(.1);
         linkNodesViaAdjacency(nodeMat.mat);
     }
 }

@@ -29,14 +29,14 @@ function addSimpleCircuit(maxNode) {
     // // OPTION 3:
     let dec = (31<<20);
     let bStr = flipStr(dec.toString(2));
-    console.log(bStr)
+    // console.log(bStr)
 
     nodeMat.mat = nodeMat.binaryToMat(bStr);
     nodeMat.matToBinary();
     nodeMat.mat = nodeMat.binaryToMat(nodeMat.binaryStr);
 
 
-    nodeMat.mat = nodeMat.createSparseAdj(.2);
+    // nodeMat.mat = nodeMat.createSparseAdj();
     linkNodesViaAdjacency(nodeMat.mat)
 }
 function flipStr(s)
