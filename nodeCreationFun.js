@@ -15,9 +15,34 @@ function addSimpleCircuit(maxNode) {
     )};
 
     // CONNECT the nodes
-    linkNodesInRing(1);
-}
+    // // OPTION 1
+    // linkNodesInRing(1);
 
+    // // OPTION 3
+    nodeMat = new AdjMat(maxNode);
+    nodeMat.mat = nodeMat.binaryToMat("11000" +
+                            "00100" +
+                            "00010" +
+                            "00001" +
+                            "10000")
+
+    // // OPTION 3:
+    let dec = (31<<20);
+    let bStr = flipStr(dec.toString(2));
+    console.log(bStr)
+
+    nodeMat.mat = nodeMat.binaryToMat(bStr);
+    nodeMat.matToBinary();
+    nodeMat.mat = nodeMat.binaryToMat(nodeMat.binaryStr);
+
+
+    nodeMat.mat = nodeMat.createSparseAdj(.2);
+    linkNodesViaAdjacency(nodeMat.mat)
+}
+function flipStr(s)
+{
+    return s.split("").reverse().join("")
+}
 function link(i,j)
 {
     nodes[i].addEdge(nodes[j]);
@@ -25,6 +50,7 @@ function link(i,j)
 function linkNodesViaAdjacency(adjMat)
 {
     for (let i=0; i<adjMat.length; i++){
+        nodes[i].children = []; //reset all connections
         for (let j=0; j<adjMat[0].length; j++){
             if (adjMat[i][j]) link(i,j);
         }

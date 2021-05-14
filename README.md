@@ -18,7 +18,11 @@ or should the graph and adjmat simply be synced?
 
 -----
 
+Completed Features:
+- can import connections from binary string (check order / convention)
+- can bitshift to "rotate connections"
 Feature requests:
 
 - [ ] delete edges / nodes gracefully
-- [ ] visualize self-connection with loop arrow
+- [~] visualize self-connection with loop arrow
+    - using circle around node for now

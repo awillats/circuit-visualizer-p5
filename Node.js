@@ -14,6 +14,7 @@ class Node {
     this.highlighted = false;
     this.faceColor = color(255);
     this.faceColor2 = color(0,0,255);
+    this.currentFaceColor = this.faceColor;
   }
   xy() {
     return createVector(this.x, this.y);
@@ -41,6 +42,10 @@ class Node {
       faceColor = this.faceColor;//255;
       textColor = darkGray;
     }
+    this.borderColor = borderColor;
+    this.edgeColor = edgeColor;
+    this.currentFaceColor = faceColor;
+    this.textColor = textColor;
 
     //noFill()
     strokeWeight(5);
@@ -56,20 +61,32 @@ class Node {
       // dvStart.setMag(this.r)
       // dv.setMag(dv.mag()-this.r*2)
       // dv = dv.add(dvStart)
-      drawCurveArrow(
-        this.xy().add(dvStart),
-        dv,
-        edgeColor,
-        arrowCurve,
-        //(sin(frameCount/10))/12,
-        this.r,
-        c.r
-      );
+
+
+      if (this.xy().equals(c.xy()))
+      {
+          noFill();
+          stroke(edgeColor);
+          circle(this.x, this.y, this.r*1.5);
+      }
+      else
+      {
+          drawCurveArrow(
+            this.xy().add(dvStart),
+            dv,
+            edgeColor,
+            arrowCurve,
+            //(sin(frameCount/10))/12,
+            this.r,
+            c.r
+          );
+      }
+
       // drawArrow(this.xy(), dvStart,200)
     });
 
     stroke(borderColor);
-    fill(faceColor);
+    fill(this.currentFaceColor);//faceColor);
     circle(this.x, this.y, this.r);
 
     strokeWeight(1);
@@ -91,6 +108,8 @@ class Node {
     return this.highlighted;
   }
   highlightChildren(depth) {
+      let propogationDelay = 400;
+
     if (depth < 0) {
       console.log("done-" + depth);
       return;
@@ -98,11 +117,12 @@ class Node {
     console.log("." + depth);
 
     if (this.highlighted) {
-      this.faceColor2 = lerpColor(
+      this.currentFaceColor = lerpColor(
         color(0, 0, 255),
         color(240, 240, 255),
         ((nodes.length - depth)) / nodes.length
       );
+
       this.children.forEach((c) => {
         if (!c.highlighted) {
           setTimeout(() => {
@@ -110,7 +130,7 @@ class Node {
             c.highlightChildren(depth - 1);
             // c.faceColor = color(0,0,255)
             console.log(this.name + c.name);
-          }, 100);
+        }, propogationDelay);
         }
         // else {
         //   console.log('cutting short')
@@ -133,11 +153,7 @@ class Node {
     this.x += this.vxy.x;
     this.y += this.vxy.y;
   }
-  // move(xy)
-  // {
-  //   this.x += xy.x;
-  //   this.y += xy.y;
-  // }
+
   force() {
     let forceSep = 8; //3 is cozy, 5-10 is spacious
     let attractAccel = 0.02;
