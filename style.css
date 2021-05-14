@@ -1,0 +1,11 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+p{
+    font-family: 'Kreon', serif;
+/* https://www.youtube.com/watch?v=3BanVQvCN6U&ab_channel=MatthewBoyle */
+}
+canvas {
+  display: block;
+}
