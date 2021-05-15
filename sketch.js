@@ -145,10 +145,10 @@ function startEdge(x,y)
             selectI = i;
         }
     });
-    console.log(selectI)
+    // console.log(selectI)
     if (selectI !== null) {
         newEdge = {startPos: createVector(x,y),startI: selectI}
-        console.log('edge started')
+        // console.log('edge started')
     }
 }
 function moveEdgeEnd(x,y)
@@ -171,7 +171,7 @@ function endEdge(x,y)
     if (selectI !== null) {
         newEdge.endI = selectI;
         link(newEdge.startI, newEdge.endI);
-        console.log('edge added')
+        // console.log('edge added')
     }
     else {
         console.log('edge missed')
