@@ -18,11 +18,22 @@ or should the graph and adjmat simply be synced?
 
 -----
 
-Completed Features:
+# Completed Features:
 - can import connections from binary string (check order / convention)
 - can bitshift to "rotate connections"
-Feature requests:
+- can toggle connections via adj mat
+- can add connections via drag arrows
+- clearMat()
 
-- [ ] delete edges / nodes gracefully
+
+# Feature requests:
+- [ ] in / out degree quant & viz
+- [.] delete edges / nodes gracefully
+    - for now just clear everything
 - [~] visualize self-connection with loop arrow
     - using circle around node for now
+
+
+
+# Bonus Features
+- [ ] duplicate edge protection (have collection of children be Sets)

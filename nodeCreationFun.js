@@ -50,6 +50,21 @@ function flipStr(s)
 {
     return s.split("").reverse().join("")
 }
+function toggleLink(i,j)
+{
+    let matchIdx = nodes[i].children.findIndex( (n,sIdx) => n===nodes[j] )
+
+    if (matchIdx>=0)
+    {
+        nodes[i].children.splice(matchIdx,1);//remove node
+        nodeMat.mat[i][j] = 0;
+    }
+    else
+    {
+        link(i,j)
+    }
+    return (matchIdx>=0);
+}
 function link(i,j)
 {
     nodes[i].addEdge(nodes[j]);

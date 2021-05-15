@@ -120,7 +120,7 @@ function bezierArrowEnd(BezSeg, arrowLen)
     return BezSeg.p2.sub(blp);
 }
 
-function drawCurveArrow(base, vec, myColor, curveAmount=100, startRadius=25, endRadius=25) {
+function drawCurveArrow(base, vec, myColor=color(0), curveAmount=0.125, startRadius=0, endRadius=0) {
 
   let originalEndPoint = p5.Vector.add(base,vec);
 

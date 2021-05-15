@@ -57,9 +57,7 @@ function draw() {
         drawCurveArrow(newEdge.startPos,
             p5.Vector.sub(newEdge.endPos, newEdge.startPos),
             color(0),
-            arrowCurve,
-            0,
-            0
+            arrowCurve
         )
     }
 }
@@ -170,7 +168,7 @@ function endEdge(x,y)
     });
     if (selectI !== null) {
         newEdge.endI = selectI;
-        link(newEdge.startI, newEdge.endI);
+        toggleLink(newEdge.startI, newEdge.endI);
         // console.log('edge added')
     }
     else {
