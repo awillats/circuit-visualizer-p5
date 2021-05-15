@@ -10,6 +10,13 @@ let nodes = [];
 let nodeMat;
 let center;
 let fontRegular;
+
+let newEdge = null;
+
+const DRAG = 0b0;
+const ADDEDGE = 0b1;
+let editMode = DRAG;
+
 function preload()
 {
 }
@@ -22,7 +29,7 @@ function setup() {
   textFont('Kreon')
 
   // GENERATE the nodes
-  let maxNode = 5;
+  let maxNode = 10;
   addSimpleCircuit(maxNode);
   // link(1,0);
   // link(0,4);
@@ -38,12 +45,43 @@ function draw() {
 // nodes.forEach((n) => n.force());
     nodes.forEach((n) => n.show());
     nodeMat.show()
+
+    if ((newEdge !== null) && (typeof newEdge.endPos !== 'undefined'))
+    {
+        // console.log(newEdge.startPos)
+        // console.log(newEdge.endPos)
+        // console.log(p5.Vector.sub(newEdge.endPos, newEdge.startPos))
+        strokeWeight(5);
+        stroke(0);
+        let arrowCurve = 0.125
+        drawCurveArrow(newEdge.startPos,
+            p5.Vector.sub(newEdge.endPos, newEdge.startPos),
+            color(0),
+            arrowCurve,
+            0,
+            0
+        )
+    }
 }
 
 
 
 function keyPressed(){
     console.log(key)
+    switch(key)
+    {
+        case " ":
+            break;
+        case "c":
+            clearMat();
+            break;
+        case "n":
+            editMode = ADDEDGE;
+            break;
+        case "m":
+            editMode = DRAG;
+            break;
+    }
     if (key===" ")
     {
         // let maxNum = pow(2,nodes.length*nodes.length);
@@ -55,11 +93,19 @@ function keyPressed(){
     }
 }
 function mouseDragged() {
-  nodes.forEach((n) => {
-    if (n.clicked) {
-      n.teleport(mouseX, mouseY);
+    if (editMode===DRAG)
+    {
+        nodes.forEach((n) => {
+          if (n.clicked) {
+            n.teleport(mouseX, mouseY);
+          }
+        });
     }
-  });
+    if (editMode===ADDEDGE)
+    {
+        moveEdgeEnd(mouseX,mouseY)
+    }
+
 }
 function mousePressed() {
   if (mouseButton == CENTER) {
@@ -67,9 +113,68 @@ function mousePressed() {
     console.log("clear");
     nodes.forEach((n) => (n.highlighted = false));
   } else {
-    nodes.forEach((n) => n.select(mouseX, mouseY));
-    nodeMat.click(mouseX,mouseY);
+
+     nodeMat.click(mouseX,mouseY);
+
+    if (editMode!==ADDEDGE){
+        nodes.forEach((n) => n.select(mouseX, mouseY));
+    }
+
+    if (editMode===ADDEDGE)
+    {
+        startEdge(mouseX,mouseY);
+    }
 
   }
   // nodes.forEach(n=>n.highlightChildren())
+}
+function mouseReleased() {
+    if (newEdge)
+    {
+        endEdge(mouseX,mouseY);
+    }
+}
+
+
+
+function startEdge(x,y)
+{
+    let selectI = null;
+    nodes.forEach((n, i) => {
+        if (n.select(x,y,true)) {
+            selectI = i;
+        }
+    });
+    console.log(selectI)
+    if (selectI !== null) {
+        newEdge = {startPos: createVector(x,y),startI: selectI}
+        console.log('edge started')
+    }
+}
+function moveEdgeEnd(x,y)
+{
+    if (newEdge)
+    {
+        newEdge.endPos = createVector(x,y);
+    }
+}
+function endEdge(x,y)
+{
+    //if the final x,y overlaps a node, then add the edge, else drop it
+    moveEdgeEnd(x,y);
+    let selectI = null;
+    nodes.forEach((n, i) => {
+        if (n.select(x,y,true)) {
+            selectI = i;
+        }
+    });
+    if (selectI !== null) {
+        newEdge.endI = selectI;
+        link(newEdge.startI, newEdge.endI);
+        console.log('edge added')
+    }
+    else {
+        console.log('edge missed')
+    }
+    newEdge = null;
 }

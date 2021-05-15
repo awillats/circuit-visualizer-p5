@@ -1,15 +1,27 @@
 function addSimpleCircuit(maxNode) {
 
+    nodeMat = new AdjMat(maxNode);
+    nodeMat.mat = nodeMat.binaryToMat("11000" +
+                            "00100" +
+                            "00010" +
+                            "00001" +
+                            "10000")
+
+    //
+    let graphY = (height - 2*(height - nodeMat.y))/2;
+    console.log(nodeMat.y)
+    console.log(graphY)
     for (let i = 0; i < maxNode; i++) {
         let circRadius = 20;
-        let posRadius = min(40+(maxNode-3)*circRadius,width*.4);
+        let posRadius = min(40+(maxNode-3)*circRadius,  graphY*.6);
+
         let xy = plotAroundCircle(posRadius,i/maxNode-.25);
 
       nodes.push(
         new Node(
           getAlphabet(i),
           (width / 2) + xy.x,
-          (height / 2) + xy.y,
+          graphY + xy.y,
           circRadius
         )
     )};
@@ -19,12 +31,7 @@ function addSimpleCircuit(maxNode) {
     // linkNodesInRing(1);
 
     // // OPTION 3
-    nodeMat = new AdjMat(maxNode);
-    nodeMat.mat = nodeMat.binaryToMat("11000" +
-                            "00100" +
-                            "00010" +
-                            "00001" +
-                            "10000")
+
 
     // // OPTION 3:
     let dec = (31<<20);
@@ -46,6 +53,7 @@ function flipStr(s)
 function link(i,j)
 {
     nodes[i].addEdge(nodes[j]);
+    nodeMat.mat[i][j] = 1;
 }
 function linkNodesViaAdjacency(adjMat)
 {
@@ -69,6 +77,12 @@ function linkNodesInRing(linkStride=1)
 }
 
 
+
+function clearMat()
+{
+    nodeMat.createBlankMat();
+    linkNodesViaAdjacency(nodeMat.mat);
+}
 
 
 function addAlphabetChain(maxNode) {

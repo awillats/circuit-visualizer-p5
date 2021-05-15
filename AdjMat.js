@@ -1,11 +1,71 @@
 class AdjMat{
-    constructor(nNodes,x=width/2,y=height*.9,tileW=20)
+    constructor(nNodes,tileW=20, x=width/2, y)
     {
         this.nNodes = nNodes;
-        this.x=x;
-        this.y=y;
+        this.x=x+tileW/2;
+        // this.y=y;
+        this.y = y || height - tileW*nNodes/2;
         this.tileW=tileW;
         this.mat = this.createBlankMat();
+    }
+    show()
+    {
+        let clr;
+        let tileW = this.tileW;
+        push();
+        translate(this.x, this.y);
+        let xy;
+        // let x0 = -this.nNodes/2;
+        // let y0 = -this.nNodes/2;
+
+        rectMode(CENTER);
+        textAlign(CENTER);
+
+        for (let i=0; i< this.nNodes; i++)
+        {
+            for (let j=0; j<this.nNodes; j++)
+            {
+                // x = i+x0;
+                // y = j+y0;
+                xy = this.indexToPosition(i,j);
+                // this should really use the color associated with edge i->j
+                clr = (this.mat[i][j]) ? nodes[i].currentFaceColor : color(150);
+
+                fill(clr);
+                stroke(0);
+                strokeWeight(2);
+                rect(xy.x, xy.y, tileW, tileW);
+            }
+
+            stroke(nodes[0].borderColor)
+            strokeWeight(0);
+
+            let xyN1 = this.indexToPosition(-1,-1);
+            fill(nodes[0].borderColor)
+            text(nodes[i].name, xy.x, xyN1.y)
+            text(nodes[i].name, xyN1.x, xy.x)
+        }
+        fill(240)
+        strokeWeight(0)
+        let xyN2 = this.indexToPosition(-2,-2);
+
+        text("from", -tileW/2, xyN2.y)
+        text("to", xyN2.x, -tileW/2);
+        pop();
+    }
+    click(cX, cY)
+    {
+        let cij = this.positionToIndex(cX,cY);
+        if ((cij.x>=0) && (cij.x<this.nNodes) && (cij.y>=0) && (cij.y<this.nNodes))
+        {
+
+            this.mat[cij.x][cij.y] = !this.mat[cij.x][cij.y];
+            // console.log(cij.x + " " +cij.y)
+            linkNodesViaAdjacency(nodeMat.mat);
+        }
+
+        // if
+        //for all tiles
     }
     createBlankMat()
     {
@@ -75,51 +135,7 @@ class AdjMat{
         this.binaryStr = bin;
         return bin;
     }
-    show()
-    {
-        let clr;
-        let tileW = this.tileW;
-        push();
-        translate(this.x, this.y);
-        let xy;
-        // let x0 = -this.nNodes/2;
-        // let y0 = -this.nNodes/2;
 
-        rectMode(CENTER);
-        textAlign(CENTER);
-
-        for (let i=0; i< this.nNodes; i++)
-        {
-            for (let j=0; j<this.nNodes; j++)
-            {
-                // x = i+x0;
-                // y = j+y0;
-                xy = this.indexToPosition(i,j);
-                // this should really use the color associated with edge i->j
-                clr = (this.mat[i][j]) ? nodes[i].currentFaceColor : color(150);
-
-                fill(clr);
-                stroke(0);
-                strokeWeight(2);
-                rect(xy.x, xy.y, tileW, tileW);
-            }
-
-            stroke(nodes[0].borderColor)
-            strokeWeight(0);
-
-            let xyN1 = this.indexToPosition(-1,-1);
-            fill(nodes[0].borderColor)
-            text(nodes[i].name, xy.x, xyN1.y)
-            text(nodes[i].name, xyN1.x, xy.x)
-        }
-        fill(240)
-        strokeWeight(0)
-        let xyN2 = this.indexToPosition(-2,-2);
-
-        text("from", -tileW/2, xyN2.y)
-        text("to", xyN2.x, -tileW/2);
-        pop();
-    }
     indexToPosition(i,j)
     {
         let x,y;
@@ -138,19 +154,6 @@ class AdjMat{
         j = floor((y-this.y+this.tileW/2)/this.tileW-y0);
         return createVector(i,j);
     }
-    click(cX, cY)
-    {
-        let cij = this.positionToIndex(cX,cY);
-        if ((cij.x>=0) && (cij.x<this.nNodes) && (cij.y>=0) && (cij.y<this.nNodes))
-        {
 
-            this.mat[cij.x][cij.y] = !this.mat[cij.x][cij.y];
-            // console.log(cij.x + " " +cij.y)
-            linkNodesViaAdjacency(nodeMat.mat);
-        }
-
-        // if
-        //for all tiles
-    }
 
 }

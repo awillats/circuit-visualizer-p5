@@ -50,7 +50,6 @@ class Node {
     //noFill()
     strokeWeight(5);
     stroke(0);
-
     let arrowCurve = 0.125
 
     this.children.forEach((c) => {
@@ -95,8 +94,15 @@ class Node {
     text(this.name, this.x, this.y);
   }
 
-  select(x, y) {
-    if (dist(this.x, this.y, x, y) < this.r) {
+  select(x, y, justCheck=false) {
+      let isOverlapped = (dist(this.x, this.y, x, y) < this.r);
+      if (justCheck)
+      {
+          // console.log(dist(this.x, this.y, x, y) - this.r)
+          return isOverlapped;
+      }
+
+    if (isOverlapped){
       this.highlighted = true;
       this.clicked = true;
       this.highlightChildren(nodes.length);
