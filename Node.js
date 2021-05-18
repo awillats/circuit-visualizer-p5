@@ -27,7 +27,7 @@ class Node {
     this.vxy.setMag(constrain(this.vxy.mag(), -5, 5));
   }
 
-  show() {
+  show(doShowEdges=true) {
     let borderColor, edgeColor, faceColor, textColor;
     if (this.highlighted) {
       borderColor = 0;
@@ -52,38 +52,42 @@ class Node {
     stroke(0);
     let arrowCurve = 0.125; //0.125
     (sin(frameCount/10))/12; //0.125
+    
+    if (doShowEdges)
+    {
+        this.children.forEach((c) => {
+          let dv = c.xy().sub(this.xy());
+          let dvStart = dv.copy();
+          dvStart.setMag(0);
 
-    this.children.forEach((c) => {
-      let dv = c.xy().sub(this.xy());
-      let dvStart = dv.copy();
-      dvStart.setMag(0);
-
-      // dvStart.setMag(this.r)
-      // dv.setMag(dv.mag()-this.r*2)
-      // dv = dv.add(dvStart)
+          // dvStart.setMag(this.r)
+          // dv.setMag(dv.mag()-this.r*2)
+          // dv = dv.add(dvStart)
 
 
-      if (this.xy().equals(c.xy()))
-      {
-          noFill();
-          stroke(edgeColor);
-          circle(this.x, this.y, this.r*1.5);
-      }
-      else
-      {
-          drawCurveArrow(
-            this.xy().add(dvStart),
-            dv,
-            edgeColor,
-            arrowCurve,
+          if (this.xy().equals(c.xy()))
+          {
+              noFill();
+              stroke(edgeColor);
+              circle(this.x, this.y, this.r*1.5);
+          }
+          else
+          {
+              drawCurveArrow(
+                this.xy().add(dvStart),
+                dv,
+                edgeColor,
+                arrowCurve,
 
-            this.r,
-            c.r
-          );
-      }
+                this.r,
+                c.r
+              );
+          }
 
-      // drawArrow(this.xy(), dvStart,200)
-    });
+          // drawArrow(this.xy(), dvStart,200)
+        });
+    }
+
 
     stroke(borderColor);
     fill(this.currentFaceColor);//faceColor);

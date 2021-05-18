@@ -1,6 +1,5 @@
-function addSimpleCircuit(maxNode) {
-
-    nodeMat = new AdjMat(maxNode);
+function addSimpleCircuit(maxNode, x= width/2) {
+    nodeMat = new AdjMat(maxNode,20, x);
     nodeMat.mat = nodeMat.binaryToMat("11000" +
                             "00100" +
                             "00010" +
@@ -8,9 +7,12 @@ function addSimpleCircuit(maxNode) {
                             "10000")
 
     //
+    let graphX = nodeMat.x-nodeMat.tileW/2;
     let graphY = (height - 2*(height - nodeMat.y))/2;
+    console.log("gx:"+graphX)
     console.log(nodeMat.y)
     console.log(graphY)
+    nodes = []
     for (let i = 0; i < maxNode; i++) {
         let circRadius = 20;
         let posRadius = min(40+(maxNode-3)*circRadius,  graphY*.6);
@@ -20,7 +22,7 @@ function addSimpleCircuit(maxNode) {
       nodes.push(
         new Node(
           getAlphabet(i),
-          (width / 2) + xy.x,
+          (graphX) + xy.x,
           graphY + xy.y,
           circRadius
         )
@@ -44,7 +46,9 @@ function addSimpleCircuit(maxNode) {
 
 
     // nodeMat.mat = nodeMat.createSparseAdj();
-    linkNodesViaAdjacency(nodeMat.mat)
+    linkNodesViaAdjacency(nodeMat.mat);
+    //return copies of nodes?
+    return {nodes:[...nodes], nodeMat:Object.assign(new AdjMat, nodeMat)};
 }
 function flipStr(s)
 {
@@ -140,7 +144,7 @@ function getAlphabet(abc_idx) {
 }
 function addHMMLogo()
 {
-    nodes.push(new Node("H"))
+  nodes.push(new Node("H"))
   nodes.push(new Node("M"))
   nodes.push(new Node("M"))
 

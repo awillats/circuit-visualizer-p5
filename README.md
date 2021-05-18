@@ -17,14 +17,20 @@ should one unified representation be managed (i.e. adjMat?)
 or should the graph and adjmat simply be synced?
 
 -----
+# Findings !
 
-# Completed Features:
-- can import connections from binary string (check order / convention)
-- can bitshift to "rotate connections"
-- can toggle connections via adj mat
-- can add connections via drag arrows
-    - will also remove redundant connections!
-- clearMat()
+closed-loop control of a node reveals a lot if
+    node N has many (non-reciprocal) inputs 
+
+for two nodes A,B,
+
+if corr(A,B) > th for both ctrl(A) and ctrl(B)
+    A <-> B
+
+
+
+# Major Issues:
+- all node creation functions reference global variables, this makes it difficult to extend
 
 
 # Feature requests:
@@ -37,7 +43,16 @@ or should the graph and adjmat simply be synced?
 - [~] visualize self-connection with loop arrow
     - using circle around node for now
 
-
+# Completed Features:
+    - toggle directional edges! (with s)
+    - highlight edges from a second adjacency matrix
+    - basic binary matrix reps
+    - can import connections from binary string (check order / convention)
+    - can bitshift to "rotate connections"
+    - can toggle connections via adj mat
+    - can add connections via drag arrows
+        - will also remove redundant connections!
+    - clearMat()
 
 # Bonus Features
 - [ ] duplicate edge protection (have collection of children be Sets)

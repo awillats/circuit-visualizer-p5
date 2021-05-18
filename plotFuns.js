@@ -224,3 +224,8 @@ function whiteCircle(p)
   circle(p.x,p.y,10)
   pop()
 }
+
+function vline(v1, v2)
+{
+    line(v1.x, v1.y, v2.x, v2.y);
+}

@@ -1,3 +1,10 @@
+// for (let i=0; i<mat.length; i++)
+// {
+//     for (let j=0; j<mat[0].length; j++)
+//     {
+//         mat[i][j]
+//     }
+// }
 class AdjMat{
     constructor(nNodes,tileW=20, x=width/2, y)
     {
@@ -117,6 +124,8 @@ class AdjMat{
         this.binaryStr = bin;
         return mat;
     }
+
+
     matToBinary(mat=this.mat)
     {
         let bin = "";
