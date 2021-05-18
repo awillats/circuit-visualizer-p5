@@ -23,10 +23,14 @@ or should the graph and adjmat simply be synced?
 - can bitshift to "rotate connections"
 - can toggle connections via adj mat
 - can add connections via drag arrows
+    - will also remove redundant connections!
 - clearMat()
 
 
 # Feature requests:
+- [ ] calculate reachability (floyd warshall ??)
+    - [ ] vis reachability (in adjMat only?)
+    - [ ] system for drawing wiggly high order connections
 - [ ] in / out degree quant & viz
 - [.] delete edges / nodes gracefully
     - for now just clear everything

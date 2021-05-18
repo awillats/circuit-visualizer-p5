@@ -1,3 +1,6 @@
+//https://stackoverflow.com/questions/51811935/point-of-intersection-between-bezier-curve-and-circle
+//https://www.desmos.com/calculator/cahqdxeshd
+//https://www.rpi.edu/dept/chem-eng/Biotech-Environ/RotArrows.htm
 function drawArrow(base, vec, myColor) {
   push();
   stroke(myColor);

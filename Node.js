@@ -50,7 +50,8 @@ class Node {
     //noFill()
     strokeWeight(5);
     stroke(0);
-    let arrowCurve = 0.125
+    let arrowCurve = 0.125; //0.125
+    (sin(frameCount/10))/12; //0.125
 
     this.children.forEach((c) => {
       let dv = c.xy().sub(this.xy());
@@ -75,7 +76,7 @@ class Node {
             dv,
             edgeColor,
             arrowCurve,
-            //(sin(frameCount/10))/12,
+
             this.r,
             c.r
           );
