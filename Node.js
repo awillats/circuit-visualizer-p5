@@ -9,6 +9,7 @@ class Node {
     this.y = y;
     this.r = r;
     this.vxy = createVector(0, 0);
+    // this.nxy = createVector(0, 0);
     this.children = [];
     this.clicked = false;
     this.highlighted = false;
@@ -52,7 +53,7 @@ class Node {
     stroke(0);
     let arrowCurve = 0.125; //0.125
     (sin(frameCount/10))/12; //0.125
-    
+
     if (doShowEdges)
     {
         this.children.forEach((c) => {
@@ -153,6 +154,12 @@ class Node {
   teleport(x, y) {
     this.x = x;
     this.y = y;
+  }
+  dmove(dx,dy)
+  {
+      // console.log(dx)
+      this.x += dx;
+      this.y += dy;
   }
   move() {
     let slow = 0.7; //.9
