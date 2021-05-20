@@ -17,15 +17,19 @@ let doShowEdges = true;
 let doShowReachEdges = true;
 let doWiggle = false;
 
+let bgColor;
 
 let startTime,endTime;
 
 const DRAG = 0b0;
 const ADDEDGE = 0b1;
+const STIM = 0b11;
+
 let editMode = DRAG;
 
 function preload()
 {
+    bgColor= color(200);
 }
 
 function setup() {
@@ -34,18 +38,30 @@ function setup() {
   textAlign(CENTER, CENTER);
   textSize(30);
   textFont('Kreon')
+  // frameRate(10)
+
+  let pageBody = document.querySelector(':root')
+  pageBody.style.setProperty('--page-color', bgColor)
 
   // GENERATE the nodes
   let maxNode = 10;
 
   let Circuit1 = addSimpleCircuit(maxNode,width*.25);
+  // big chain
   clearMat();
-  link(0,1)
-  link(1,2)
-  link(2,3)
-  link(3,4)
-  link(4,5)
-  link(4,5)
+  for (let i=0; i<6; i++)
+  link(i, i+1)
+
+//   //chain
+//   clearMat();
+//   link(0,1)
+//   link(1,2)
+// //collider
+//   link(3,4)
+//   link(5,4)
+// //fork
+//   link(7,6)
+//   link(7,8)
 
 
   // let Circuit1 = addSimpleChain(maxNode,width*.25);
@@ -82,8 +98,12 @@ function transformMat2()
     // nodeMat2.mat = mats_OR(m, bMat_mult(m,m)); // second order reachability
     // nodeMat2.mat = mats_OR(mc, bMat_mult(mc,mc)); // second order reachability
 
-    // nodeMat2.mat = mats_XOR(mc, reachability_bMult(mc));
+    // // nodeMat2.mat = mats_XOR(mc, reachability_bMult(mc));
+    // nodeMat2.mat = reachability_bMult(mc);
+    // nodeMat2.mat = reachability_bMult(undirectMat(mc));
     nodeMat2.mat = reachability_bMult(mc);
+
+
 
 }
 
@@ -102,15 +122,47 @@ function roundTo(val,nPlaces)
 }
 
 function draw() {
-  background(200);
+  background(bgColor);
   // nodes.forEach(n => n.select(mouseX,mouseY))
 // nodes.forEach((n) => n.force());
 
     if (doWiggle) { wiggleNodes(); }
     if (doShowReachEdges) {
         let highOrder = nodeMat2.mat;//mats_AND(nodeMat2.mat, mat_NOT(nodeMat.mat));
-       drawAdj2(highOrder);
+       drawAdj2(reachability_bMult(nodeMat.mat),color(180));
+       drawAdj2(highOrder,color(90));
+
+
     }
+
+
+    let adj = nodeMat2.mat
+    let adjT = transposeMat(adj)
+    for (let i=0; i<nodes.length; i++)
+    {
+        let indeg=0;
+        let outdeg=0;
+
+        for (let j=0; j<nodes.length; j++)
+        {
+            if (adj[i][j]) { outdeg++; }
+            if (adj[j][i]) { indeg++; }
+        }
+        nodes[i].inDegree = indeg;
+        nodes[i].outDegree = outdeg;
+
+        if (indeg>0)
+        {
+            nodes[i].type = (outdeg > 0) ? 'bridge' : 'sink';
+        }
+        else
+        {
+            nodes[i].type = (outdeg > 0) ? 'source' : 'island';
+        }
+        nodes[i].ioDegree = indeg+outdeg;
+    }
+
+
     nodes.forEach((n) => n.show(doShowEdges));
     nodeMat.show()
     nodeMat2.show()
@@ -134,6 +186,11 @@ function draw() {
     {
         let n = nodes[controlIndex];
         drawController(n.x, n.y, n.r)
+    }
+    if (editMode == STIM)
+    {
+        let boltW = 30;
+        drawBolt(mouseX,mouseY, boltW, boltW/4,2);
     }
 }
 
@@ -191,6 +248,7 @@ function keyPressed(){
     {
         case CONTROL:
             setControlIdx(mouseX,mouseY);
+
             break;
     }
     switch(key)
@@ -206,6 +264,10 @@ function keyPressed(){
         case "m":
             editMode = DRAG;
             break;
+        case "o":
+            editMode = STIM;
+            break;
+
         case "s":
             doShowEdges = !doShowEdges;
             break;
@@ -230,7 +292,8 @@ function mouseDragged() {
     if (editMode===DRAG)
     {
         nodes.forEach((n) => {
-          if (n.clicked) {
+          // if (n.clicked) {
+          if (n.select(mouseX, mouseY,true)){
             n.teleport(mouseX, mouseY);
           }
         });
@@ -252,7 +315,8 @@ function mousePressed() {
      nodeMat.click(mouseX,mouseY);
      transformMat2()
     if (editMode!==ADDEDGE){
-        nodes.forEach((n) => n.select(mouseX, mouseY));
+        // console.log(editMode)
+        nodes.forEach((n) => n.select(mouseX, mouseY,editMode!==STIM));
     }
 
     if (editMode===ADDEDGE)
@@ -285,42 +349,47 @@ function setControlIdx(x,y)
     // controlIndex = selectI;
 }
 
-function drawAdj2(adj=nodeMat2.mat)
+function drawAdj2(adj=nodeMat2.mat, edgeColor = color(255,0,0))
 {
-    let corrEdgeColor = color(255,0,0);
+    // let corrEdgeColor = color(255,0,0);
     push();
     noFill();
     strokeWeight(3)
-    stroke(corrEdgeColor);
+    stroke(edgeColor);
     for (let i=0; i<nodes.length; i++)
     {
         for (let j=0; j<nodes.length; j++)
         {
             if ((adj[i][j]) && (i!=j))
             {
-
-                let p1 = nodes[i].xy();
-                let p2 = nodes[j].xy();
-                let dv = p5.Vector.sub(p2,p1);
-                let d = dv.mag();
-
-                let d1 = (nodes[i].r/d);
-                let d2 = 1 - (nodes[j].r/d);
-                let p1_ = dv.copy().mult( d1 );
-                let p2_ = dv.copy().mult( d2 );
-                push();
-                translate(p1.x,p1.y);
-                // vline(p1_, p2_);
-
-                rotate(dv.heading());
-                line(d1*d,0,d2*d,0)
-                // stroke(color(0,0,255))
-                // line(d1*d,2.5,d2*d,2.5)
-
-                pop();
+                // stroke(edgeColor);
+                drawConnect(i,j)
             }
         }
     }
+    pop();
+}
+
+function drawConnect(i,j,offset=0)
+{
+    let p1 = nodes[i].xy();
+    let p2 = nodes[j].xy();
+    let dv = p5.Vector.sub(p2,p1);
+    let d = dv.mag();
+
+    let d1 = (nodes[i].r/d);
+    let d2 = 1 - (nodes[j].r/d);
+    let p1_ = dv.copy().mult( d1 );
+    let p2_ = dv.copy().mult( d2 );
+    push();
+    translate(p1.x,p1.y);
+    // vline(p1_, p2_);
+
+    rotate(dv.heading());
+    line(d1*d,offset , d2*d, offset)
+    // stroke(color(0,0,255))
+    // line(d1*d,2.5,d2*d,2.5)
+
     pop();
 }
 

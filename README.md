@@ -27,18 +27,22 @@ for two nodes A,B,
 if corr(A,B) > th for both ctrl(A) and ctrl(B)
     A ⟷ B
 
-
+reach(un(M)) is insufficient to predict correlation in forks
 
 # Major Issues:
 - all node creation functions reference global variables, this makes it difficult to extend
 
 
 # Feature requests:
-- [ !] visualize where we're controlling
-    - diamond around node? 
+- [x] visualize where we're controlling
+    - diamond around node?
+    - [x] used rotating circle segments
 - [ !] in / out degree quant & viz
     - this helps build intuition for which points are good to intervene
     - cytoscape scales nodes by total degree
+
+- [!!!] - actually! this phase propogation thing is what we want to do instead of reachability(Unidirect(M))
+    which doesn't identify "common cause" correlation
 
 - [ !] after calculating reachability, topologically sort the network
     - all "leftmost" nodes propogate their "phase" to all their children
@@ -111,7 +115,7 @@ if corr(A,B) > th for both ctrl(A) and ctrl(B)
 
 ----------------------
 ## Additional topics
-- generally, should be leveraging graph theory more, for instace
+- generally, should be leveraging graph theory more, for instance
     - idea of where to control can be tied back to "minimum cut" and "highly connected subgraphs"
     - maximal clique
 ## Similar frameworks:
@@ -121,3 +125,11 @@ if corr(A,B) > th for both ctrl(A) and ctrl(B)
     - has lots of layout options, including "force atlats"
 
 - Cytoscape
+
+---------------
+
+degree
+
+in-degree (r)
+out-degree (b)
+betweenness (mediator - G) (more complicated)

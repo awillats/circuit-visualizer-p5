@@ -221,7 +221,7 @@ function drawController(x,y,r)
     let cr = 1.5*r;
     let ndiv = 4;
     let ccolor = color(0,0,255);
-    let phase = .03*frameCount;
+    let phase = .06*frameCount;
 
     dA = (2*PI / ndiv) * (1/10);
 
@@ -231,28 +231,68 @@ function drawController(x,y,r)
     stroke(ccolor)
     strokeWeight(5)
 
-    // let xyPrev = createVector(0,-cr)
-
-    let xyPrev = plotAroundCircle(cr, phase)
-
     for (let i=1; i<ndiv+1; i++)
     {
         let a1 = 2*PI*(i-1)/ndiv + phase;
         let a2 = 2*PI*(i)/ndiv + phase;
-        // let xy = plotAroundCircle(cr, (i)/ndiv+phase);
-        // drawCurveArrow(xyPrev, p5.Vector.sub(xy,xyPrev), ccolor,curve,segSpace,segSpace)
 
         arc(0,0,2*cr,2*cr, a1+dA,a2-dA)
         xyPrev = xy;
 
     }
-
-    // circle(0,0,cr)
-
-
     pop();
 }
 
+function drawBolt(x,y, L,W,n=3, a=PI/4,boltColor)
+{
+    boltColor = boltColor || color(255,255,0)
+    //color(0,0,255)
+    push()
+
+    let dY = L/n;
+    let dX = W/n;//10;//W/2;//W/n;
+    let skewX = -1.5*W;
+
+
+    translate(x - dX*(n-1) - skewX,  y-L)
+
+
+    fill(boltColor)
+    // noFill()
+    strokeWeight(3)
+    stroke(boltColor)
+    beginShape()
+    vertex(0,0) //A
+
+    // let skewX;
+    for (let i = 1; i<n; i++)
+    {
+        let sx = skewX*i/n;
+        vertex((i-1)*dX +sx, i*dY) //B1
+        vertex(i*dX +sx, i*dY) //B2
+    }
+    vertex((n-1)*dX + skewX, n*dY) //D - bottom point
+    let yi;
+    let hShiftPerc;
+    for (let i = n-1; i>0; i--)
+    {
+        let sx = skewX*i/n;
+
+        yi = (i*dY-dX)
+        hShiftPerc = 1 - (yi/L);
+        xShift = hShiftPerc*W + sx;
+        // console.log(hShiftPerc)
+        //
+
+        vertex(     i*dX + xShift, yi)
+        vertex( (i-1)*dX + xShift, yi)
+    }
+    vertex(W,0)
+    vertex(0,0)
+    endShape()
+
+    pop()
+}
 // function circleSeg(x,y,r,a1,a2)
 // {
 //

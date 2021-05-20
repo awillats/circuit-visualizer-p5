@@ -23,6 +23,13 @@ class Node {
   addEdge(eNode) {
     this.children.push(eNode);
   }
+
+  calcOutDegree()
+  {
+      return this.children.length;
+  }
+
+
   accel(Axy) {
     this.vxy.add(Axy);
     this.vxy.setMag(constrain(this.vxy.mag(), -5, 5));
@@ -40,8 +47,30 @@ class Node {
       borderColor = darkGray;
       edgeColor = color(red(borderColor), green(borderColor), blue(borderColor));
       // edgeColor.setAlpha(100);
-      faceColor = this.faceColor;//255;
-      textColor = darkGray;
+      //
+      //
+//     adjMat
+
+      // this.faceColor
+      // faceColor = lerpColor(color(150),color(0,0,255), outScore);//255;
+      // faceColor = color(inScore*255, 255, outScore*255)
+      let degreeMax = 6;
+      if (this.inDegree !== undefined)
+      {
+
+          let inScore = map(this.inDegree,0,degreeMax,0,1);
+          let outScore = map(this.outDegree,0,degreeMax,0,1);
+
+          faceColor = color(inScore*255, 0, outScore*255)
+          faceColor = lerpColor(color(150), faceColor,
+                    map(this.inDegree+this.outDegree,0,degreeMax,0,1))
+          this.r = this.inDegree*this.outDegree+25;
+      }
+      else
+      {
+
+      }
+    textColor = darkGray;
     }
     this.borderColor = borderColor;
     this.edgeColor = edgeColor;
