@@ -52,10 +52,17 @@ class AdjMat{
             text(nodes[i].name, xy.x, xyN1.y)
             text(nodes[i].name, xyN1.x, xy.x)
         }
-        fill(240)
-        strokeWeight(0)
+
+
         let xyN2 = this.indexToPosition(-2,-2);
 
+        if ((this.title !== undefined) && (this.title !== null))
+        {
+            fill(0)
+            text(this.title, -tileW/2, xyN2.y-tileW)
+        }
+        fill(240)
+        strokeWeight(0)
         text("from", -tileW/2, xyN2.y)
         text("to", xyN2.x, -tileW/2);
         pop();

@@ -5,7 +5,7 @@
 
 let nodes = [];
 let nodes2 = [];
-let controlIndex = 9999;
+let controlIndex = null;
 
 let nodeMat, nodeMat2;
 
@@ -15,7 +15,7 @@ let fontRegular;
 let newEdge = null;
 let doShowEdges = true;
 let doShowReachEdges = true;
-let doWiggle = true;
+let doWiggle = false;
 
 
 let startTime,endTime;
@@ -59,6 +59,8 @@ function setup() {
 
   nodeMat2 = new AdjMat(maxNode, 20, width*.75);
   transformMat2();
+  nodeMat.title = "adjacency"
+  nodeMat2.title = "reachability"
 
   // addAlphabetChain(maxNode)
   // addHMMLogo();
@@ -126,6 +128,12 @@ function draw() {
             color(0),
             arrowCurve
         )
+    }
+
+    if (controlIndex!==null)
+    {
+        let n = nodes[controlIndex];
+        drawController(n.x, n.y, n.r)
     }
 }
 
@@ -272,17 +280,18 @@ function setControlIdx(x,y)
         }
     });
     // console.log(selectI);
-    controlIndex = (controlIndex == selectI) ? -1 : selectI;
+    controlIndex = (controlIndex == selectI) ? null : selectI;
 
     // controlIndex = selectI;
 }
 
 function drawAdj2(adj=nodeMat2.mat)
 {
+    let corrEdgeColor = color(255,0,0);
     push();
     noFill();
     strokeWeight(3)
-    stroke(color(255,0,0));
+    stroke(corrEdgeColor);
     for (let i=0; i<nodes.length; i++)
     {
         for (let j=0; j<nodes.length; j++)

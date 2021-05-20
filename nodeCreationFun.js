@@ -9,9 +9,9 @@ function addSimpleCircuit(maxNode, x= width/2) {
     //
     let graphX = nodeMat.x-nodeMat.tileW/2;
     let graphY = (height - 2*(height - nodeMat.y))/2;
-    console.log("gx:"+graphX)
-    console.log(nodeMat.y)
-    console.log(graphY)
+    // console.log("gx:"+graphX)
+    // console.log(nodeMat.y)
+    // console.log(graphY)
     nodes = []
     for (let i = 0; i < maxNode; i++) {
         let circRadius = 20;

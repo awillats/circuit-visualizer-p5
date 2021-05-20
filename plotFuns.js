@@ -216,6 +216,47 @@ function plotAroundCircle(r, anglePerc )
     return xy;
 }
 
+function drawController(x,y,r)
+{
+    let cr = 1.5*r;
+    let ndiv = 4;
+    let ccolor = color(0,0,255);
+    let phase = .03*frameCount;
+
+    dA = (2*PI / ndiv) * (1/10);
+
+    push()
+    translate(x,y)
+    noFill()
+    stroke(ccolor)
+    strokeWeight(5)
+
+    // let xyPrev = createVector(0,-cr)
+
+    let xyPrev = plotAroundCircle(cr, phase)
+
+    for (let i=1; i<ndiv+1; i++)
+    {
+        let a1 = 2*PI*(i-1)/ndiv + phase;
+        let a2 = 2*PI*(i)/ndiv + phase;
+        // let xy = plotAroundCircle(cr, (i)/ndiv+phase);
+        // drawCurveArrow(xyPrev, p5.Vector.sub(xy,xyPrev), ccolor,curve,segSpace,segSpace)
+
+        arc(0,0,2*cr,2*cr, a1+dA,a2-dA)
+        xyPrev = xy;
+
+    }
+
+    // circle(0,0,cr)
+
+
+    pop();
+}
+
+// function circleSeg(x,y,r,a1,a2)
+// {
+//
+// }
 function whiteCircle(p)
 {
   push()

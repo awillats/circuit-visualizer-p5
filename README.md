@@ -25,7 +25,7 @@ closed-loop control of a node reveals a lot if
 for two nodes A,B,
 
 if corr(A,B) > th for both ctrl(A) and ctrl(B)
-    A <-> B
+    A ⟷ B
 
 
 
@@ -34,7 +34,13 @@ if corr(A,B) > th for both ctrl(A) and ctrl(B)
 
 
 # Feature requests:
-- [ ] after calculating reachability, topologically sort the network
+- [ !] visualize where we're controlling
+    - diamond around node? 
+- [ !] in / out degree quant & viz
+    - this helps build intuition for which points are good to intervene
+    - cytoscape scales nodes by total degree
+
+- [ !] after calculating reachability, topologically sort the network
     - all "leftmost" nodes propogate their "phase" to all their children
         - easy! all nodes with no in degree get their own phase
     - maybe have intrinsic noise only move in Y dimension
@@ -60,14 +66,11 @@ if corr(A,B) > th for both ctrl(A) and ctrl(B)
             - convex hull ?
         - offset connections?
 
-- [ ] in / out degree quant & viz
-    - this helps build intuition for which points are good to intervene
-    - cytoscape scales nodes by total degree
 
 - [~] delete edges / nodes gracefully
     - for now just clear everything
 - [~] visualize self-connection with loop arrow
-    - using circle around node for now
+    - [x] using circle around node for now
 
 # Completed Features:
     - toggle directional edges! (with s)
@@ -82,8 +85,19 @@ if corr(A,B) > th for both ctrl(A) and ctrl(B)
 
 # Bonus Features
 - [ ] nodes wiggle to show correlation :)
-- [ ] visualize where we're controlling
 - [ ] visualize open-loop stim
+
+- [ ] import-export adjacency
+    in this format:
+        {a,b,c,d,e,f,g}
+        a→b
+        b→c,d
+        d→a
+
+        f⟷g  
+    export
+        to matlab, python, (GML?) txt
+
 - [ ] viz multiple mats on one tile
 - [ ] highlight control-severed edges
     csev = m & !ctrl(m)
