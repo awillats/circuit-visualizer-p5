@@ -94,7 +94,15 @@ function linkNodesViaAdjacency(adjMat)
         }
     }
 }
-
+function linkChain(idxList)
+{
+    for (let i=1; i< idxList.length; i++)
+    {
+        let prevId = idxList[i-1];
+        let currId = idxList[i];
+        link(prevId,currId);
+    }
+}
 function linkNodesInRing(linkStride=1)
 {
     for (let i = 0; i < nodes.length; i++) {
@@ -102,7 +110,8 @@ function linkNodesInRing(linkStride=1)
         j = (i+linkStride);
         if (j<0) j+= nodes.length;
         j = j%nodes.length;
-        nodes[i].addEdge(nodes[j]);
+        link(i,j)
+        // nodes[i].addEdge(nodes[j]);
     }
 }
 

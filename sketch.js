@@ -68,14 +68,16 @@ function setup() {
 
   //chain
   clearMat();
-  link(0,1)
-  link(1,2)
-//collider
-  link(3,4)
-  link(5,4)
-//fork
-  link(7,6)
-  link(7,8)
+  linkChain([0,2,3,4,5])
+//
+//   link(0,1)
+//   link(1,2)
+// //collider
+//   link(3,4)
+//   link(5,4)
+// //fork
+//   link(7,6)
+//   link(7,8)
 
   for (let i=0; i<nodes.length; i++)
   {
@@ -100,6 +102,8 @@ function setup() {
 
   nodeMat2 = new AdjMat(maxNode, 20, width*.75);
   transformMat2();
+  graphEntryArea.elt.value = exportAdjMatToText(nodeMat.mat);
+
   nodeMat.title = "adjacency"
   nodeMat2.title = "reachability"
 
@@ -113,8 +117,8 @@ function transformMat2()
     // let m = nodeMat.mat;
     // console.log('slow')
     if (!(nodeMat) || !(nodeMat2)) { return false;}
-    let m = nodeMat.mat;
 
+    let m = nodeMat.mat;
     //m & m' : highlights reciprocal connections
     //m & !m' : highlights strictly directional links
     // let mc = undirectMat( zeroCol(controlIndex, m));
@@ -380,6 +384,29 @@ function wiggleNodes()
         }
     }
 }
+function exportAdjMatToText(aMat)
+{
+    let s = '';
+    for (let r=0; r<aMat.length; r++)
+    {
+        let head = nodes[r].name + '->';
+        let tail = '';
+        for (let c=0; c<aMat[0].length; c++)
+        {
+            if (aMat[r][c])
+            {
+                tail += (nodes[c].name+',');
+            }
+        }
+        if (tail.length>0)
+        {
+            s += head+tail.slice(0,-1);
+            s += '\n';
+        }
+    }
+    // console.log(s)
+    return s;
+}
 function name2index(nameStr)
 {
     const isMatchingName =  (n) => n.name === nameStr;
@@ -419,26 +446,35 @@ function parseTextToAdj(txt)
             return;
         }
 
-        let idFrom, idTo;
-        let fromIndices, toIndices;
+        if (pieces.length > 2)
+        {
 
-        idFrom = name2index(pieces[0]);
+            // console.log('chains only work with ONE node per segment')
+            // console.log('e.g. A->B->C->D works ')
+            // console.log('but A->B,C->D doesnt')
+            // console.log(pieces)
+            linkChain( pieces.map(p => name2index(p.trim())) )
+        }
+        else
+        {
+
+        }
 
         let fromPieces = pieces[0].split(',');
         let toPieces = pieces[1].split(',');
 
         fromPieces.forEach( fromP => {
-            let idFrom = name2index(fromP);
+            let idFrom = name2index(fromP.trim());
             toPieces.forEach( toP =>
             {
-                let idTo = name2index(toP);
+                let idTo = name2index(toP.trim());
                 if (link (idFrom, idTo))
                 {
-                    console.log('valid link from ' + pieces[0] +' to '+toP)
+                    // console.log('valid link from ' + pieces[0] +' to '+toP)
                     if (isBidirectional)
                     {
                         link(idTo, idFrom);
-                        console.log('and back')
+                        // console.log('and back')
                     }
                 }
                 else
@@ -447,34 +483,15 @@ function parseTextToAdj(txt)
                 }
             })
         })
-
-        // if (toPieces.length > 1)
-        // {
-        //
-        //     idTo = name2index(toPieces[0]);
-        // }
-        // else
-        // {
-        //     idTo = name2index(pieces[1]);
-        // }
-
-
-
-        // console.log(pieces[0] +":"+ idFrom + "," + pieces[1] +":"+ idTo)
-        // if (bothValid(idFrom,idTo))
-        // {
-        //     link (idFrom, idTo);
-        //     console.log('valid link!')
-        // }
-        // else
-        // {
-        //     console.log("WARNING: something about this>> " + aLine + " << is invalid\n")
-        // }
     })
     // console.log(txt);
 }
 
 
+function exportGraphToTextField()
+{
+    graphEntryArea.elt.value = exportAdjMatToText(nodeMat.mat);
+}
 function updateGraphViaText()
 {
     let txt = graphEntryArea.elt.value;
@@ -514,6 +531,7 @@ function keyPressed(){
             break;
         case "c":
             clearMat();
+            exportGraphToTextField();
             break;
         case "n":
             editMode = ADDEDGE;
@@ -534,6 +552,9 @@ function keyPressed(){
         case "w":
             doWiggle = !doWiggle;
             break;
+        case "x":
+            exportGraphToTextField();
+            break;
     }
     if (key===" ")
     {
@@ -541,6 +562,7 @@ function keyPressed(){
         nodeMat2.createSparseAdj(.1);
 
         linkNodesViaAdjacency(nodeMat.mat);
+        exportGraphToTextField();
     }
     transformMat2();
 

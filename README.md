@@ -37,7 +37,7 @@ reach(un(M)) is insufficient to predict correlation in forks
 - [ ] have data generation, but currently only works with pure sources
     - can't handle reciprocal nodes as upstream sources
     - probably depends on (cycle-compatible) topological sort for resolution
-    
+
 - [ ] have adjacency measure as anonymous function that can be reused?
     or non-anonymous is fine too ...
 - [ ] topological sort -> y position
@@ -91,6 +91,10 @@ reach(un(M)) is insufficient to predict correlation in forks
     - [x] using circle around node for now
 
 # Completed Features:
+    - graph import from text field
+        - can use bidirectional arrows <->
+        - and multi input multi output lines a,b,c<->d,e
+    - graph export to text field
     - toggle directional edges! (with s)
     - highlight edges from a second adjacency matrix
     - basic binary matrix reps
