@@ -34,12 +34,26 @@ reach(un(M)) is insufficient to predict correlation in forks
 
 
 # Feature requests:
+- [ ] have data generation, but currently only works with pure sources
+    - can't handle reciprocal nodes as upstream sources
+    - probably depends on (cycle-compatible) topological sort for resolution
+    
+- [ ] have adjacency measure as anonymous function that can be reused?
+    or non-anonymous is fine too ...
+- [ ] topological sort -> y position
+- [ ] print to console control severance score!
+    - [ ] just requires rowSum, colSum, matSum
 - [x] visualize where we're controlling
     - diamond around node?
     - [x] used rotating circle segments
-- [ !] in / out degree quant & viz
+- [~] in / out degree quant & viz
+    - should we color / size by 1st order degree?
+    - or reachable degree?
+    - calculate betweenness?
+
     - this helps build intuition for which points are good to intervene
     - cytoscape scales nodes by total degree
+    -
 
 - [!!!] - actually! this phase propogation thing is what we want to do instead of reachability(Unidirect(M))
     which doesn't identify "common cause" correlation
@@ -101,9 +115,10 @@ reach(un(M)) is insufficient to predict correlation in forks
         f⟷g  
     export
         to matlab, python, (GML?) txt
-
-- [ ] viz multiple mats on one tile
-- [ ] highlight control-severed edges
+- [ ] "mute/unmute" all inputs/outputs by toggling column / row in adjacency matrix
+- [ ] nicer UI elements (with ControlP5)
+- [~] viz multiple mats on one tile
+- [~] highlight control-severed edges
     csev = m & !ctrl(m)
     overlay red Xs
 - [ ] color nodes by community

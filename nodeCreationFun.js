@@ -17,7 +17,9 @@ function addSimpleCircuit(maxNode, x= width/2) {
         let circRadius = 20;
         let posRadius = min(40+(maxNode-3)*circRadius,  graphY*.6);
 
-        let xy = plotAroundCircle(posRadius,i/maxNode-.25);
+        // let xy = plotAroundCircle(posRadius,i/maxNode-.25);
+        let xy = plotAroundCircle(posRadius,(i+.15)/maxNode-.25);
+
 
       nodes.push(
         new Node(
@@ -71,8 +73,17 @@ function toggleLink(i,j)
 }
 function link(i,j)
 {
-    nodes[i].addEdge(nodes[j]);
-    nodeMat.mat[i][j] = 1;
+    if ((i>=0) && (j>=0) && (i<nodes.length) && (j < nodes.length))
+    {
+        nodes[i].addEdge(nodes[j]);
+        nodeMat.mat[i][j] = 1;
+        transformMat2()
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 function linkNodesViaAdjacency(adjMat)
 {

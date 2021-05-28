@@ -13,6 +13,9 @@ function matsAreEqual(mat1, mat2)
     return true;
 }
 
+
+
+// OLD DEFINTION
 function are_passively_ambig(mat1, mat2)
 {
     return matsAreEqual(undirectMat(mat1), undirectMat(mat2));
@@ -132,10 +135,10 @@ function reachability_bMult(bmat,fast=true)
     for (let i=0; i< bmat.length; i++)
     {
         if (fast) {
-            R = mats_OR(R, bMat_mult(R,R))
+            R = mats_OR(R, bMat_fastMult(R,R))
         }
         else {
-            R = mats_OR(R, bMat_fastMult(R,R))
+            R = mats_OR(R, bMat_mult(R,R))
         }
     }
     return R;
@@ -144,6 +147,17 @@ function reachability_bMult(bmat,fast=true)
 function reachability_FloydWarshall(bmat)
 {
 
+}
+function forkShapedReachability(bmat)
+{
+    return bMat_mult( reachability_bMult(bmat),
+                      reachability_bMult(transposeMat(bmat)) );
+}
+
+function colliderReachability(bmat)
+{
+    return bMat_mult( reachability_bMult(transposeMat(bmat)) ,
+                      reachability_bMult(bmat));
 }
 
 

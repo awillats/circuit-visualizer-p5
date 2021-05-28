@@ -16,6 +16,31 @@ class Node {
     this.faceColor = color(255);
     this.faceColor2 = color(0,0,255);
     this.currentFaceColor = this.faceColor;
+
+    this.currentValue = 0;
+    this.values = [0];
+    this.valueLen = 200;
+
+
+    this.valueFun = function (t,i ) {
+        // let s = sin(t / (2*PI));
+        // let s = noise(t*i/100 + i*i*123); // works nicely
+        let s = noise((t/i)/5 + i*123.4321);
+
+        // s = (s>0) ? 1 : 0;
+        // s = map(s,-1,1,0,1);
+        // s = ((5/30)*s > random()) ? 0 : 1;
+        return s;
+    }
+
+    // this.valueFun = function (t) {
+    //     let s = sin(t / (2*PI));
+    //     // s = (s>0) ? 1 : 0;
+    //     s = map(s,-1,1,0,1);
+    //     // s = ((5/30)*s > random()) ? 0 : 1;
+    //     return s;
+    // }
+    // this.valueLen = 500;
   }
   xy() {
     return createVector(this.x, this.y);
@@ -29,6 +54,11 @@ class Node {
       return this.children.length;
   }
 
+  pushVal(v=this.currentValue)
+  {
+      this.values.unshift(v);
+      this.values = this.values.slice(0,this.valueLen);
+  }
 
   accel(Axy) {
     this.vxy.add(Axy);
@@ -54,17 +84,31 @@ class Node {
       // this.faceColor
       // faceColor = lerpColor(color(150),color(0,0,255), outScore);//255;
       // faceColor = color(inScore*255, 255, outScore*255)
-      let degreeMax = 6;
+
+
+      // colorMode(HSB, 1)
+      // faceColor = this.values[0];
+      // let r,g,b;
+      // r = red(faceColor);
+      // b = green(faceColor);
+      // b = blue(faceColor);
+      // colorMode(RGB,255);
+      // faceColor = color(r,g,b);
+      let cv = this.values[0]*255
+      faceColor = color(cv,cv,cv);
+      let degreeMax = 3;
       if (this.inDegree !== undefined)
       {
 
           let inScore = map(this.inDegree,0,degreeMax,0,1);
           let outScore = map(this.outDegree,0,degreeMax,0,1);
 
-          faceColor = color(inScore*255, 0, outScore*255)
-          faceColor = lerpColor(color(150), faceColor,
-                    map(this.inDegree+this.outDegree,0,degreeMax,0,1))
-          this.r = this.inDegree*this.outDegree+25;
+          // faceColor = color(inScore*255, 0, outScore*255)
+          // faceColor = lerpColor(color(150), faceColor,
+          //           map(this.inDegree+this.outDegree,0,degreeMax,0,1))
+
+          //SCALE radius by degree
+          // this.r = 2*(this.inDegree*this.outDegree)+25;
       }
       else
       {
@@ -134,6 +178,8 @@ class Node {
       if (justCheck)
       {
           // console.log(dist(this.x, this.y, x, y) - this.r)
+          // if (isOverlapped) { this.clicked=true;}
+          this.clicked=isOverlapped;
           return isOverlapped;
       }
 
@@ -240,3 +286,11 @@ class Node {
     this.move();
   }
 }
+
+// end of class definition
+
+
+// function name2index(nameStr)
+// {
+//
+// }

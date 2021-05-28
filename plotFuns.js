@@ -220,7 +220,7 @@ function drawController(x,y,r)
 {
     let cr = 1.5*r;
     let ndiv = 4;
-    let ccolor = color(0,0,255);
+    let ccolor = color(0,255,255);
     let phase = .06*frameCount;
 
     dA = (2*PI / ndiv) * (1/10);
