@@ -114,7 +114,17 @@ function curveSeg(mag, c, bezDist, curveType='rightAngle')
   return {p1:pStart, a1:cStart,a2:cEnd, p2:pEnd};
 
 }
-
+function drawArrowX(BezSeg, xColor=color(255,0,0))
+{
+    noFill();
+    stroke(xColor);
+    let bMid = bezierLerp(BezSeg, .5);
+    line(bMid.x-10, bMid.y-10, bMid.x+10, bMid.y+10);
+    line(bMid.x+10, bMid.y-10, bMid.x-10,bMid.y+10);
+    // 
+    // line(bMid.x-10, bMid.y, bMid.x+10, bMid.y);
+    // line(bMid.x, bMid.y-10, bMid.x,bMid.y+10);
+}
 function bezierArrowEnd(BezSeg, arrowLen)
 {
     bezPerc = 1-arrowLen/approxBezierLength(BezSeg.p1,BezSeg.a1,BezSeg.a2,BezSeg.p2)
@@ -207,7 +217,7 @@ function drawCurveArrow(base, vec, myColor=color(0), curveAmount=0.125, startRad
     translate(-arrowSize,0)
   triangle(0, arrowSize / 3, 0, -arrowSize / 3, arrowSize, 0);
   pop();
-
+  return BezSeg;
 }
 
 function plotAroundCircle(r, anglePerc )

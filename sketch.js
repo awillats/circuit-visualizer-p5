@@ -248,6 +248,7 @@ function draw() {
     {
         let n = nodes[controlIndex];
         drawController(n.x, n.y, n.r)
+
     }
     if (editMode == STIM)
     {
@@ -665,6 +666,11 @@ function setControlIdx(x,y)
     // console.log(selectI);
     controlIndex = (controlIndex == selectI) ? null : selectI;
 
+    nodes.forEach(n=>n.isControlled=false);
+    if (controlIndex!==null)
+    {
+        nodes[controlIndex].isControlled=true;
+    }
     // controlIndex = selectI;
 }
 

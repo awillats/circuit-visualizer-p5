@@ -13,6 +13,8 @@ class Node {
     this.children = [];
     this.clicked = false;
     this.highlighted = false;
+    this.isControlled = false;
+
     this.faceColor = color(255);
     this.faceColor2 = color(0,0,255);
     this.currentFaceColor = this.faceColor;
@@ -147,8 +149,9 @@ class Node {
           }
           else
           {
-              drawCurveArrow(
-                this.xy().add(dvStart),
+              let arrowBase = this.xy().add(dvStart);
+              let bezSeg = drawCurveArrow(
+                arrowBase,
                 dv,
                 edgeColor,
                 arrowCurve,
@@ -156,6 +159,17 @@ class Node {
                 this.r,
                 c.r
               );
+
+              // translate(dvStart);
+              // translate(width/2, height/2)
+              if (c.isControlled)
+              {
+                  push()
+                  translate(arrowBase);
+                  rotate(dv.heading())
+                  drawArrowX(bezSeg);
+                  pop()
+              }
           }
 
           // drawArrow(this.xy(), dvStart,200)
