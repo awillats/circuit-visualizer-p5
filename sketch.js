@@ -17,7 +17,7 @@ let fontRegular;
 let newEdge = null;
 let doShowEdges = true;
 let doShowReachEdges = true;
-let doWiggle = true;//false;
+let doWiggle = false;
 
 let bgColor;
 
@@ -65,30 +65,32 @@ function setup() {
   // clearMat();
   // for (let i=0; i<6; i++)
   // link(i, i+1)
+  // linkChain([0,2,3,4,5])
+
 
   //chain
   clearMat();
-  linkChain([0,2,3,4,5])
-//
-//   link(0,1)
-//   link(1,2)
-// //collider
-//   link(3,4)
-//   link(5,4)
-// //fork
-//   link(7,6)
-//   link(7,8)
 
-  for (let i=0; i<nodes.length; i++)
-  {
-      nodes[i].x = floor(i/3)*100+ width/2
-      nodes[i].y = 100+40*i;
-  }
-  nodes[1].x += 50
-  nodes[4].x += 50
-  nodes[7].x -= 50
+  link(0,1)
+  link(1,2)
+//collider
+  link(3,4)
+  link(5,4)
+//fork
+  link(7,6)
+  link(7,8)
 
-  nodes[maxNode-1].y = height;
+//position nodes triples for signal visibility
+  // for (let i=0; i<nodes.length; i++)
+  // {
+  //     nodes[i].x = floor(i/3)*100+ width/2
+  //     nodes[i].y = 100+40*i;
+  // }
+  // nodes[1].x += 50
+  // nodes[4].x += 50
+  // nodes[7].x -= 50
+  //
+  // nodes[maxNode-1].y = height;
 
 
   // let Circuit1 = addSimpleChain(maxNode,width*.25);
@@ -111,7 +113,10 @@ function setup() {
   // addHMMLogo();
 }
 
-
+function getCtrlMat()
+{
+    return zeroCol(controlIndex, nodeMat.mat);
+}
 function transformMat2()
 {
     // let m = nodeMat.mat;
@@ -122,7 +127,7 @@ function transformMat2()
     //m & m' : highlights reciprocal connections
     //m & !m' : highlights strictly directional links
     // let mc = undirectMat( zeroCol(controlIndex, m));
-    let mc = ( zeroCol(controlIndex, m));
+    let mc = getCtrlMat();//( zeroCol(controlIndex, m));
 
     // nodeMat2.mat = undirectMat( zeroCol(controlIndex, m));
 
@@ -136,7 +141,7 @@ function transformMat2()
     // nodeMat2.mat = forkShapedReachability(mc);
 
     // nodeMat2.mat = colliderReachability(mc);
-   nodeMat2.mat = mats_OR(reachability_bMult(mc), colliderReachability(mc));
+   // nodeMat2.mat = mats_OR(reachability_bMult(mc), colliderReachability(mc));
 }
 
 function startT(){
@@ -153,19 +158,49 @@ function roundTo(val,nPlaces)
     return round(val*shiftTen)/shiftTen;
 }
 
+
+
 function draw() {
   background(bgColor);
+
   // nodes.forEach(n => n.select(mouseX,mouseY))
 // nodes.forEach((n) => n.force());
 
     // if (doWiggle) { wiggleNodes(); }
 
+    nodes.forEach((n) => n.show(doShowEdges));
+    nodeMat.show()
+    nodeMat2.show()
+
+
+    let magenta  = color(170,0,170);
+    let cyan = color(0,170,170);
+    let m = getCtrlMat();//nodeMat.mat;
+    let mt = reachability_bMult(transposeMat(m));
+
+    let mr = reachability_bMult(m);
+    let umr = undirectMat(mr);
+
+    // let adjB = forkShapedReachability(m);
+    // let adjC = colliderReachability(m);
+
+    let adjB = mats_AND( forkShapedReachability(m), mat_NOT(umr) );
+    let adjC = mats_AND( colliderReachability(m), mat_NOT(umr) );
+    //
+    // let adjB = mat_NOT(umr);
+    // let adjC =mat_NOT(umr);
+
     if (doShowReachEdges) {
         let highOrder = nodeMat2.mat;//mats_AND(nodeMat2.mat, mat_NOT(nodeMat.mat));
         // draw uncontrolled adjacency matrix
-       // drawAdj2(reachability_bMult(nodeMat.mat),color(180));
-       drawAdj2(highOrder,color(90));
+       drawAdj2(highOrder, color(150));
+       drawAdj2(adjC, cyan,2);
+       drawAdj2(adjB,magenta,4);
+
     }
+
+    // drawAdj2(mt, color(200,100,0),8);
+
 
 
     // let adj = nodeMat2.mat
@@ -191,8 +226,8 @@ function draw() {
 
 
     nodes.forEach((n) => n.show(doShowEdges));
-    nodeMat.show()
-    nodeMat2.show()
+    // nodeMat.show()
+    // nodeMat2.show()
 
     if ((newEdge !== null) && (typeof newEdge.endPos !== 'undefined'))
     {
@@ -633,7 +668,7 @@ function setControlIdx(x,y)
     // controlIndex = selectI;
 }
 
-function drawAdj2(adj=nodeMat2.mat, edgeColor = color(255,0,0))
+function drawAdj2(adj=nodeMat2.mat, edgeColor = color(255,0,0),edgeOffset=0)
 {
     // let corrEdgeColor = color(255,0,0);
     push();
@@ -644,16 +679,32 @@ function drawAdj2(adj=nodeMat2.mat, edgeColor = color(255,0,0))
     {
         for (let j=0; j<nodes.length; j++)
         {
-            if ((adj[i][j]) && (i!=j))
+            if ((adj[i][j]))
             {
                 // stroke(edgeColor);
-                drawConnect(i,j)
+                if ((i!=j))
+                {
+                    drawConnect(i,j,edgeOffset)
+                    markAdjTile(i,j, nodeMat2,edgeColor, 10-edgeOffset)
+                }
+
             }
         }
     }
     pop();
 }
+function markAdjTile(i,j, baseAdjMat, markColor, markSize=9)
+{
+    push();
+    translate(baseAdjMat.x,baseAdjMat.y)
+    // translate(width/2,height/2)
+    let pos = baseAdjMat.indexToPosition(i,j)
 
+    noFill();
+    stroke(markColor)
+    circle(pos.x,pos.y,markSize)
+    pop();
+}
 function drawConnect(i,j,offset=0)
 {
     let p1 = nodes[i].xy();

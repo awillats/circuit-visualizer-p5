@@ -150,14 +150,18 @@ function reachability_FloydWarshall(bmat)
 }
 function forkShapedReachability(bmat)
 {
-    return bMat_mult( reachability_bMult(bmat),
-                      reachability_bMult(transposeMat(bmat)) );
+    return bMat_mult( reachability_bMult(transposeMat(bmat)) ,
+                      reachability_bMult(bmat));
+   // return bMat_mult( reachability_bMult(bmat),
+   //                  reachability_bMult(transposeMat(bmat)) );
 }
 
 function colliderReachability(bmat)
 {
-    return bMat_mult( reachability_bMult(transposeMat(bmat)) ,
-                      reachability_bMult(bmat));
+    return bMat_mult( reachability_bMult(bmat),
+                      reachability_bMult(transposeMat(bmat)) );
+    // return bMat_mult( reachability_bMult(transposeMat(bmat)) ,
+    //                   reachability_bMult(bmat));
 }
 
 

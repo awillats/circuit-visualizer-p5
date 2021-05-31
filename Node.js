@@ -138,7 +138,7 @@ class Node {
           // dv.setMag(dv.mag()-this.r*2)
           // dv = dv.add(dvStart)
 
-
+          //draw self-connection
           if (this.xy().equals(c.xy()))
           {
               noFill();

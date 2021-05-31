@@ -27,7 +27,12 @@ for two nodes A,B,
 if corr(A,B) > th for both ctrl(A) and ctrl(B)
     A ⟷ B
 
+chains contain both colliders and forks
+
 reach(un(M)) is insufficient to predict correlation in forks
+
+closed-loop control can eliminate colliders (by serving inputs to junction)
+closed-loop control interrrupts chains
 
 # Major Issues:
 - all node creation functions reference global variables, this makes it difficult to extend
@@ -55,10 +60,10 @@ reach(un(M)) is insufficient to predict correlation in forks
     - cytoscape scales nodes by total degree
     -
 
-- [!!!] - actually! this phase propogation thing is what we want to do instead of reachability(Unidirect(M))
+- [~] - actually! this phase propogation thing is what we want to do instead of reachability(Unidirect(M))
     which doesn't identify "common cause" correlation
 
-- [ !] after calculating reachability, topologically sort the network
+- [~] after calculating reachability, topologically sort the network
     - all "leftmost" nodes propogate their "phase" to all their children
         - easy! all nodes with no in degree get their own phase
     - maybe have intrinsic noise only move in Y dimension
@@ -66,7 +71,11 @@ reach(un(M)) is insufficient to predict correlation in forks
     - then addition can cause correlation in both?
 
     - wiggling should simply be a sum of all input wiggles?
-    - control sets phase to follow control oscillator?
+        - normalize by num inputs?
+        - verify this is what's implemented
+    - [ ] control sets phase to follow control oscillator?
+    -
+
 
 - [ x] calculate reachability (floyd warshall ??)
     - [x.] vis reachability (in adjMat only?)
@@ -152,3 +161,17 @@ degree
 in-degree (r)
 out-degree (b)
 betweenness (mediator - G) (more complicated)
+
+
+------
+
+e->a->b->d
+c->b
+
+big fork:
+a->b->c->d
+a->j->i->h
+
+big collider
+h->i->j->a
+d->c->b->a
