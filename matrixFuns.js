@@ -14,6 +14,44 @@ function matsAreEqual(mat1, mat2)
 }
 
 
+function eyeMat(n)
+{
+    let mat = [];
+    for (let i=0; i<n; i++)
+    {
+        mat[i] = [];
+        for (let j=0; j<n; j++)
+        {
+            mat[i][j] = (i==j) ? 1 : 0;
+        }
+    }
+    return mat;
+}
+function vectorSum(v)
+{
+    const reducer = (accum, currentVal) => accum + currentVal;
+    return v.reduce(reducer);
+}
+function matrixSum(mat)
+{
+    // let s=0;;
+    // const rowReducer = (accum, currentVal) => accum + vectorSum(currentVal);
+    return vectorSum(mat.flat());
+}
+function zeroMat(n)
+{
+    let mat = [];
+    for (let i=0; i<n; i++)
+    {
+        mat[i] = [];
+        for (let j=0; j<n; j++)
+        {
+            // eyeMat[i][j] = (i==j) ? 1 : 0;
+            mat[i][j] = 0;
+        }
+    }
+    return mat;
+}
 
 // OLD DEFINTION
 function are_passively_ambig(mat1, mat2)
@@ -163,7 +201,14 @@ function colliderReachability(bmat)
     // return bMat_mult( reachability_bMult(transposeMat(bmat)) ,
     //                   reachability_bMult(bmat));
 }
-
+function colliderOrDirectReachability(bmat)
+{
+    return mats_OR(reachability_bMult(bmat), colliderReachability(bmat));
+}
+function forkOrDirectReachability(bmat)
+{
+    return mats_OR(reachability_bMult(bmat), forkShapedReachability(bmat));
+}
 
 
 function mats_XOR(mat1, mat2)

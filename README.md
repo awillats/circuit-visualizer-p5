@@ -37,8 +37,18 @@ closed-loop control interrrupts chains
 # Major Issues:
 - all node creation functions reference global variables, this makes it difficult to extend
 
+- [ ] signal propogation for correlation inspection is "too correlated"
+
 
 # Feature requests:
+- [ ] should fork-shaped and collider shaped reachability be undirected?
+
+- [ ] calculate "passes through node X" reachability
+    - [ ] this is like a ternary reachability i suppose!
+    - [ ] and precursor for "what if condition"
+- [~] split edge drawing and matrix highlights into 2 functions
+    - dangerous because of semi-arbitrary visualization criteria
+
 - [ ] have data generation, but currently only works with pure sources
     - can't handle reciprocal nodes as upstream sources
     - probably depends on (cycle-compatible) topological sort for resolution
@@ -175,3 +185,13 @@ a->j->i->h
 big collider
 h->i->j->a
 d->c->b->a
+
+-----
+interesting circuits
+a->j
+b->e
+c->e
+f->e,h,j
+g->g,h
+i->d
+j->c,e

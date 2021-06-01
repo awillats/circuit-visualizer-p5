@@ -23,6 +23,7 @@ let bgColor;
 
 let startTime,endTime;
 
+let rseed;
 
 let graphEntryArea;
 let graphEntryFocus=false;
@@ -36,6 +37,7 @@ let editMode = DRAG;
 function preload()
 {
     bgColor= color(200);
+    rseed = random(1000);
 }
 
 function setup() {
@@ -173,30 +175,58 @@ function draw() {
     nodeMat2.show()
 
 
+    let reachFun = forkOrDirectReachability;
+
     let magenta  = color(170,0,170);
     let cyan = color(0,170,170);
-    let m = getCtrlMat();//nodeMat.mat;
-    let mt = reachability_bMult(transposeMat(m));
+    // cyan = lerpColor(cyan,bgColor,.8);
 
+    let red = lerpColor(color(255,0,0),bgColor,.6)
+
+    let m = getCtrlMat();
+    let mt = reachability_bMult(transposeMat(m));
     let mr = reachability_bMult(m);
     let umr = undirectMat(mr);
 
-    // let adjB = forkShapedReachability(m);
-    // let adjC = colliderReachability(m);
-
-    let adjB = mats_AND( forkShapedReachability(m), mat_NOT(umr) );
-    let adjC = mats_AND( colliderReachability(m), mat_NOT(umr) );
-    //
-    // let adjB = mat_NOT(umr);
-    // let adjC =mat_NOT(umr);
+    //fork and collider-based reachability tend to be bidirectional
+    //so if you want to see "did I sever this connection"
+    //probably need to compare against bidirectional baseline
+    let adjB = forkShapedReachability(m);
+    let adjC = colliderReachability(m);
+    //cut ignores colliders
+    let cutAdj = mats_AND( reachFun(nodeMat.mat), mat_NOT(reachFun(getCtrlMat())) );
+    // cutAdj = mats_AND( mat1,
+    //           mat_NOT( mat2 ) )
 
     if (doShowReachEdges) {
-        let highOrder = nodeMat2.mat;//mats_AND(nodeMat2.mat, mat_NOT(nodeMat.mat));
-        // draw uncontrolled adjacency matrix
-       drawAdj2(highOrder, color(150));
-       drawAdj2(adjC, cyan,2);
-       drawAdj2(adjB,magenta,4);
 
+        let dirEdge = nodeMat.mat;
+        let unEdge = mats_OR(undirectMat(nodeMat.mat), eyeMat(nodes.length));
+        let I = eyeMat(nodes.length);
+        let Z = zeroMat(nodes.length);
+        let O = mat_NOT(Z);
+
+        // // if in debug view:
+        // dirEdge = zeroMat(nodes.length);
+        // unEdge = zeroMat(nodes.length);
+
+        // let highOrder = mats_AND(nodeMat2.mat, mat_NOT(nodeMat.mat));
+        // draw uncontrolled adjacency matrix
+       drawEdgesAndMarks( nodeMat2.mat, dirEdge, O, color(150) );
+
+       // drawEdgesAndMarks( adjC, unEdge, Z,  cyan, 2, 5 );
+       drawEdgesAndMarks( adjB, unEdge, Z,  magenta, 4, 8 );
+
+       drawEdgesAndMarks( cutAdj, unEdge, Z , red, 2, 5,'X',true );
+       if (controlIndex != null)
+       {
+           let cutSum = matrixSum(cutAdj);
+           push()
+           fill(red)
+           noStroke()
+           text(cutSum.toString(),width/2,height*.9)
+           pop()
+       }
     }
 
     // drawAdj2(mt, color(200,100,0),8);
@@ -674,32 +704,71 @@ function setControlIdx(x,y)
     // controlIndex = selectI;
 }
 
-function drawAdj2(adj=nodeMat2.mat, edgeColor = color(255,0,0),edgeOffset=0)
+// function drawAdjAndEdges(adj, AdjException)
+
+function markAdjfromMat(adj=nodeMat2.mat, adjException = zeroMat(nodes.length),
+                        markColor = color(255,0,0), markSize=10, adjMarkType='CIRCLE')
 {
-    // let corrEdgeColor = color(255,0,0);
+    adjException = adjException || zeroMat(nodes.length)
     push();
     noFill();
     strokeWeight(3)
-    stroke(edgeColor);
+    stroke(markColor);
+
     for (let i=0; i<nodes.length; i++)
     {
         for (let j=0; j<nodes.length; j++)
         {
-            if ((adj[i][j]))
+            if ( typeof(adjException[i])=="undefined")
             {
-                // stroke(edgeColor);
-                if ((i!=j))
-                {
-                    drawConnect(i,j,edgeOffset)
-                    markAdjTile(i,j, nodeMat2,edgeColor, 10-edgeOffset)
-                }
-
+                console.log(adjException)
+                console.log(i+" "+j)
+                noLoop();
+            }
+            if ((adj[i][j]) && !(adjException[i][j]))
+            {
+                markAdjTile(i,j, nodeMat2, markColor, markSize,adjMarkType)
             }
         }
     }
     pop();
 }
-function markAdjTile(i,j, baseAdjMat, markColor, markSize=9)
+
+function drawEdgesFromMat(adj=nodeMat2.mat, adjException=eyeMat(nodes.length),
+                            edgeColor = color(255,0,0),edgeOffset=0, doDash=false)
+{
+    adjException = adjException || eyeMat(nodes.length);
+    push();
+    noFill();
+    strokeWeight(3)
+    stroke(edgeColor);
+
+    for (let i=0; i<nodes.length; i++)
+    {
+        for (let j=0; j<nodes.length; j++)
+        {
+            // console.log(nodes.length)
+            // console.log(adjException.length)
+
+            if ((adj[i][j]) && !(adjException[i][j]))
+            {
+                drawConnect(i,j,edgeOffset, doDash)
+            }
+        }
+    }
+    pop();
+}
+
+function drawEdgesAndMarks(adj=nodeMat2.mat, edgeExcept=eyeMat(nodes.length), adjExcept=zeroMat(nodes.length),
+                          edgeColor = color(255,0,0),edgeOffset=0,
+                          markSize=10, markType='CIRCLE', doDash=false, )
+{
+    // console.log(adjExcept)
+    drawEdgesFromMat(adj, edgeExcept,  edgeColor, edgeOffset, doDash)
+    markAdjfromMat(  adj, adjExcept, edgeColor, markSize, markType)
+}
+
+function markAdjTile(i,j, baseAdjMat, markColor, markSize=9, markType='CIRCLE')
 {
     push();
     translate(baseAdjMat.x,baseAdjMat.y)
@@ -708,11 +777,20 @@ function markAdjTile(i,j, baseAdjMat, markColor, markSize=9)
 
     noFill();
     stroke(markColor)
-    circle(pos.x,pos.y,markSize)
+    switch(markType)
+    {
+        case 'CIRCLE':
+            circle(pos.x,pos.y,markSize)
+            break;
+        case 'X':
+            drawX(pos, markColor, markSize)
+            break;
+    }
     pop();
 }
-function drawConnect(i,j,offset=0)
+function drawConnect(i,j,offset=0,doDash=false)
 {
+    if (i==j) {return;}
     let p1 = nodes[i].xy();
     let p2 = nodes[j].xy();
     let dv = p5.Vector.sub(p2,p1);
@@ -727,7 +805,11 @@ function drawConnect(i,j,offset=0)
     // vline(p1_, p2_);
 
     rotate(dv.heading());
-    line(d1*d,offset , d2*d, offset)
+
+    if (doDash) {     drawingContext.setLineDash([20,20]); }
+    line(d1*d, offset , d2*d, offset)
+    // dashedLine(createVector(d1*d,offset), createVector(d2*d, offset), 20,20);
+
     // stroke(color(0,0,255))
     // line(d1*d,2.5,d2*d,2.5)
 

@@ -114,16 +114,25 @@ function curveSeg(mag, c, bezDist, curveType='rightAngle')
   return {p1:pStart, a1:cStart,a2:cEnd, p2:pEnd};
 
 }
-function drawArrowX(BezSeg, xColor=color(255,0,0))
+function drawArrowX(BezSeg, xColor=color(255,0,0),xSize=10)
 {
-    noFill();
-    stroke(xColor);
+
     let bMid = bezierLerp(BezSeg, .5);
-    line(bMid.x-10, bMid.y-10, bMid.x+10, bMid.y+10);
-    line(bMid.x+10, bMid.y-10, bMid.x-10,bMid.y+10);
-    // 
+    drawX(bMid, xColor,xSize);
+
+    //
     // line(bMid.x-10, bMid.y, bMid.x+10, bMid.y);
     // line(bMid.x, bMid.y-10, bMid.x,bMid.y+10);
+}
+function drawX(xPos=createVector(0,0), xColor=color(255,0,0),xSize=10)
+{
+    push()
+    translate(xPos.x, xPos.y);
+    noFill();
+    stroke(xColor);
+    line(-xSize, -xSize, xSize, xSize);
+    line(xSize, -xSize, -xSize, xSize);
+    pop()
 }
 function bezierArrowEnd(BezSeg, arrowLen)
 {
@@ -252,6 +261,29 @@ function drawController(x,y,r)
     }
     pop();
 }
+
+// function dashedLine(v1, v2,dLen=5,spaceLen = 10)
+// {
+//
+//     let dv = p5.Vector.sub(v2,v1);
+//     let totalDist = dv.mag();
+//     // console.log(totalDist)
+//     let dvPiece = dv.copy();
+//     dvPiece.setMag(dLen);
+//
+//
+//     let nSeg = totalDist/dLen;
+//
+//
+//     let d = 0;
+//     let onOff = true;
+//     push()
+//     translate(v1.x,v1.y)
+//     strokeWeight(2)
+//     line(0,0,dv.x,dv.y)
+//
+//     pop();
+// }
 
 function drawBolt(x,y, L,W,n=3, a=PI/4,boltColor)
 {

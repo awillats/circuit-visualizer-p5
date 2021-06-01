@@ -27,7 +27,7 @@ class Node {
     this.valueFun = function (t,i ) {
         // let s = sin(t / (2*PI));
         // let s = noise(t*i/100 + i*i*123); // works nicely
-        let s = noise((t/i)/5 + i*123.4321);
+        let s = noise(( (t+i*123.4321+rseed)   /i)/5 );
 
         // s = (s>0) ? 1 : 0;
         // s = map(s,-1,1,0,1);
