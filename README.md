@@ -157,6 +157,7 @@ closed-loop control interrrupts chains
     - idea of where to control can be tied back to "minimum cut" and "highly connected subgraphs"
     - maximal clique
 ## Similar frameworks:
+- [NetworkX](https://networkx.org/documentation/stable/auto_examples/index.html#javascript)
 - [Gephi](https://youtu.be/371n3Ye9vVo)
     gephi network datasets, could be scanned for candidate networks to ID
     - https://github.com/gephi/gephi/wiki/Datasets
