@@ -177,7 +177,8 @@ function draw() {
 
     let reachFun = forkOrDirectReachability;
 
-    let magenta  = color(170,0,170);
+    let magenta  = lerpColor(color(255), bgColor,.7);
+    //color(170,0,170);
     let cyan = color(0,170,170);
     // cyan = lerpColor(cyan,bgColor,.8);
 
@@ -212,12 +213,13 @@ function draw() {
 
         // let highOrder = mats_AND(nodeMat2.mat, mat_NOT(nodeMat.mat));
         // draw uncontrolled adjacency matrix
+
+        drawEdgesAndMarks( cutAdj, unEdge, Z , red, 0, 5,'X',true );
        drawEdgesAndMarks( nodeMat2.mat, dirEdge, O, color(150) );
 
        // drawEdgesAndMarks( adjC, unEdge, Z,  cyan, 2, 5 );
-       drawEdgesAndMarks( adjB, unEdge, Z,  magenta, 4, 8 );
+       drawEdgesAndMarks( adjB, unEdge, Z,  magenta, 0*4, 8 );
 
-       drawEdgesAndMarks( cutAdj, unEdge, Z , red, 2, 5,'X',true );
        if (controlIndex != null)
        {
            let cutSum = matrixSum(cutAdj);
