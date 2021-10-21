@@ -1,10 +1,10 @@
-# circuit-visualizer-p5
+# [circuit-visualizer-p5](https://awillats.github.io/circuit-visualizer-p5/)
 
 🚧  Work in progress 🚧 
 Experimental visualizer for studying networks / graphs / circuits and properties of their adjacency matrices.
 The big-picture goal for this project is to inform how best to stimulate neural circuits in order to infer their connectivity.
 
-Try:
+[Try demo:](https://awillats.github.io/circuit-visualizer-p5/)
 - clicking the adjacency matrix
 - moving nodes around (`m`)
 - typing new circuits into the text field
