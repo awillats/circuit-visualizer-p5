@@ -8,7 +8,8 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 - clicking the adjacency matrix
 - moving nodes around (`m`)
 - typing new circuits into the text field  
-![demo circuit](imgs/spiral_circuit.png  =250x250)
+
+![demo circuit](imgs/spiral_circuit.png  | width=250)
 
 # Keyboard Commands: ⌨️
 ## Editting modes
