@@ -198,24 +198,24 @@ betweenness (mediator - G) (more complicated)
 
 
 ------
+# interesting circuits
 
-e->a->b->d
-c->b
+- e->a->b->d
+- c->b
 
 big fork:
-a->b->c->d
-a->j->i->h
+- a->b->c->d
+- a->j->i->h
 
 big collider
-h->i->j->a
-d->c->b->a
+- h->i->j->a
+- d->c->b->a
 
 -----
-interesting circuits
-a->j
-b->e
-c->e
-f->e,h,j
-g->g,h
-i->d
-j->c,e
+- a->j
+- b->e
+- c->e
+- f->e,h,j
+- g->g,h
+- i->d
+- j->c,e
