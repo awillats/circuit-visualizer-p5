@@ -13,9 +13,9 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 
 # Keyboard Commands: ⌨️
 ## Editting modes
-`n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge 
-`m`: enter "`m`ove" mode, drag nodes to reposition them 
-`o`: enter "`o`pen-loop stimulation mode", clicking on a node delivers stimulation  
+`n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge  
+`m`: enter "`m`ove" mode, drag nodes to reposition them   
+`o`: enter "`o`pen-loop stimulation mode", clicking on a node delivers stimulation   
 ## Display layers
 `s`: toggle showing edges  
 `r`: toggle showing indirect connections  
