@@ -7,8 +7,8 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 [Try demo:](https://awillats.github.io/circuit-visualizer-p5/)
 - clicking the adjacency matrix
 - moving nodes around (`m`)
-- typing new circuits into the text field
-![demo circuit](imgs/spiral_circuit.png)
+- typing new circuits into the text field  
+![demo circuit](imgs/spiral_circuit.png  =250x250)
 
 # Keyboard Commands: ⌨️
 ## Editting modes
