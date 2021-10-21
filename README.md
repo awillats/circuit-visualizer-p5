@@ -9,7 +9,7 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 - moving nodes around (`m`)
 - typing new circuits into the text field
 
-# Keyboard commands:
+# Keyboard commands: ⌨️
 ## Editting modes
 `n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge 
 `m`: enter "`m`ove" mode, drag nodes to reposition them 
@@ -46,7 +46,7 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 
 - Cytoscape
 -----
-# Findings !
+# Early findings 🔍
 
 closed-loop control of a node reveals a lot if
     node N has many (non-reciprocal) inputs
@@ -63,8 +63,8 @@ reach(un(M)) is insufficient to predict correlation in forks
 closed-loop control can eliminate colliders (by serving inputs to junction)
 closed-loop control interrrupts chains
 
-# Major Issues:
-- all node creation functions reference global variables, this makes it difficult to extend
+# Major Issues 🐛:
+- [ ] all node creation functions reference global variables, this makes it difficult to extend
 
 - [ ] signal propogation for correlation inspection is "too correlated"
 
@@ -126,7 +126,7 @@ closed-loop control interrrupts chains
 - [~] visualize self-connection with loop arrow  
     - [x] using circle around node for now
 
-# Bonus Features
+# Bonus Features 🎁
 - [ ] nodes wiggle to show correlation :)
 - [ ] visualize open-loop stim
 
@@ -152,7 +152,7 @@ closed-loop control interrrupts chains
 
 - [ ] duplicate edge protection (have collection of children be Sets)
 
-## Additional caveats: 
+## Additional caveats: ⚠️
 
 the force distribution piece of this is a mess
 
@@ -185,7 +185,7 @@ betweenness (mediator - G) (more complicated)
 
 
 ------
-# interesting circuits 
+# interesting circuits 🕸️ 
 e->a->b->d  
 c->b  
 
