@@ -38,15 +38,16 @@ The big-picture goal for this project is to inform how best to stimulate neural 
     - clearMat()
 
 ## Similar frameworks:
+- [xcorr-visualzier-p5](https://github.com/awillats/xcorr-visualizer-p5)
+    - improves on visualizing outputs of nodes
 - [NetworkX](https://networkx.org/documentation/stable/auto_examples/index.html#javascript)
 - [Gephi](https://youtu.be/371n3Ye9vVo)
     gephi network datasets, could be scanned for candidate networks to ID
     - https://github.com/gephi/gephi/wiki/Datasets
     - has lots of layout options, including "force atlats"
-
 - Cytoscape
 -----
-# Early findings 🔍
+# Early findings: 🔍
 
 closed-loop control of a node reveals a lot if
     node N has many (non-reciprocal) inputs
@@ -63,13 +64,13 @@ reach(un(M)) is insufficient to predict correlation in forks
 closed-loop control can eliminate colliders (by serving inputs to junction)
 closed-loop control interrrupts chains
 
-# Major Issues 🐛:
+# Major Issues: 🐛
 - [ ] all node creation functions reference global variables, this makes it difficult to extend
 
 - [ ] signal propogation for correlation inspection is "too correlated"
 
 
-# Feature requests:
+# Feature requests: 🌠
 - [ ] should fork-shaped and collider shaped reachability be undirected?  
 - [ ] calculate "passes through node X" reachability
     - [ ] this is like a ternary reachability i suppose!
@@ -131,14 +132,13 @@ closed-loop control interrrupts chains
 - [ ] visualize open-loop stim
 
 - [ ] import-export adjacency
-    in this format:
-        {a,b,c,d,e,f,g}
-        a→b
-        b→c,d
-        d→a
-
-        f⟷g  
-    export
+    in this format:  
+        {a,b,c,d,e,f,g}  
+        a→b  
+        b→c,d  
+        d→a  
+        f⟷g    
+    export  
         to matlab, python, (GML?) txt
 - [ ] "mute/unmute" all inputs/outputs by toggling column / row in adjacency matrix
 - [ ] nicer UI elements (with ControlP5)
@@ -154,46 +154,34 @@ closed-loop control interrrupts chains
 
 ## Additional caveats: ⚠️
 
-the force distribution piece of this is a mess
-
-may want links to have forces act on them in future
-
-could add "angular attractors", i.e. attract individual nodes to an angle from the center, for default ordering of nodes
-
-will connect "reachability" highlighting to matrix view
-
-
-have simple circuit generation lay nodes out in a static ring
-
-should one unified representation be managed (i.e. adjMat?)
-or should the graph and adjmat simply be synced?
+- the force distribution piece of this is a mess
+    -  may want links to have forces act on them in future
+    - could add "angular attractors", i.e. attract individual nodes to an angle from the center, for default ordering of nodes
+- will connect "reachability" highlighting to matrix view
+- have simple circuit generation lay nodes out in a static ring
+- should one unified representation be managed (i.e. adjMat?)
+    - or should the graph and adjmat simply be synced?
 
 ----------------------
 ## Additional topics
 - generally, should be leveraging graph theory more, for instance
     - idea of where to control can be tied back to "minimum cut" and "highly connected subgraphs"
     - maximal clique
-
-
----------------
-
-degree: 
-
-in-degree (r)  
-out-degree (b)  
-betweenness (mediator - G) (more complicated)  
-
+- quantifying degree: 
+    - in-degree (r)  
+    - out-degree (b)  
+    - betweenness (mediator - G) (more complicated)  
 
 ------
 # interesting circuits 🕸️ 
 e->a->b->d  
 c->b  
 
-big fork:
+big fork:  
 a->b->c->d  
 a->j->i->h  
 
-big collider
+big collider:  
 h->i->j->a  
 d->c->b->a  
 
