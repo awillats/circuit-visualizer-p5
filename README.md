@@ -186,7 +186,6 @@ big collider:
 h->i->j->a  
 d->c->b->a  
 
------
 a->j  
 b->e  
 c->e  
