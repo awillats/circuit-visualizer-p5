@@ -11,16 +11,16 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 
 # Keyboard commands:
 ## Editting modes
-`n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge
-`m`: enter "`m`ove" mode, drag nodes to reposition them
-`o`: enter "`o`pen-loop stimulation mode", clicking on a node delivers stimulation
+`n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge 
+`m`: enter "`m`ove" mode, drag nodes to reposition them 
+`o`: enter "`o`pen-loop stimulation mode", clicking on a node delivers stimulation  
 ## Display layers
-`s`: toggle showing edges
-`r`: toggle showing indirect connections
-`w`: `w`iggle nodes
+`s`: toggle showing edges  
+`r`: toggle showing indirect connections  
+`w`: `w`iggle nodes, display outputs  
 
-`x`: e`x`port graph to text field
-`<space>`: create a new random, sparse network
+`x`: e`x`port graph to text field  
+`<space>`: create a new random, sparse network 
 
 # Completed Features:
     - graph import from text field
@@ -70,18 +70,15 @@ closed-loop control interrrupts chains
 
 
 # Feature requests:
-- [ ] should fork-shaped and collider shaped reachability be undirected?
-
+- [ ] should fork-shaped and collider shaped reachability be undirected?  
 - [ ] calculate "passes through node X" reachability
     - [ ] this is like a ternary reachability i suppose!
     - [ ] and precursor for "what if condition"
 - [~] split edge drawing and matrix highlights into 2 functions
-    - dangerous because of semi-arbitrary visualization criteria
-
+    - dangerous because of semi-arbitrary visualization criteria  
 - [ ] have data generation, but currently only works with pure sources
     - can't handle reciprocal nodes as upstream sources
-    - probably depends on (cycle-compatible) topological sort for resolution
-
+    - probably depends on (cycle-compatible) topological sort for resolution  
 - [ ] have adjacency measure as anonymous function that can be reused?
     or non-anonymous is fine too ...
 - [ ] topological sort -> y position
@@ -92,29 +89,22 @@ closed-loop control interrrupts chains
     - [x] used rotating circle segments
 - [~] in / out degree quant & viz
     - should we color / size by 1st order degree?
-    - or reachable degree?
-    - calculate betweenness?
-
-    - this helps build intuition for which points are good to intervene
-    - cytoscape scales nodes by total degree
-    -
-
-- [~] - actually! this phase propogation thing is what we want to do instead of reachability(Unidirect(M))
-    which doesn't identify "common cause" correlation
-
-- [~] after calculating reachability, topologically sort the network
-    - all "leftmost" nodes propogate their "phase" to all their children
-        - easy! all nodes with no in degree get their own phase
-    - maybe have intrinsic noise only move in Y dimension
-    - control only move in x direction
-    - then addition can cause correlation in both?
-
-    - wiggling should simply be a sum of all input wiggles?
+    - or reachable degree?  
+    - calculate betweenness?  
+    - this helps build intuition for which points are good to intervene  
+    - cytoscape scales nodes by total degree  
+- [~] - actually! this phase propogation thing is what we want to do instead of reachability(Unidirect(M))  
+    which doesn't identify "common cause" correlation  
+- [~] after calculating reachability, topologically sort the network  
+    - all "leftmost" nodes propogate their "phase" to all their children  
+        - easy! all nodes with no in degree get their own phase  
+    - maybe have intrinsic noise only move in Y dimension  
+    - control only move in x direction  
+    - then addition can cause correlation in both?  
+    - wiggling should simply be a sum of all input wiggles?  
         - normalize by num inputs?
         - verify this is what's implemented
-    - [ ] control sets phase to follow control oscillator?
-    -
-
+    - [ ] control sets phase to follow control oscillator?  
 
 - [ x] calculate reachability (floyd warshall ??)
     - [x.] vis reachability (in adjMat only?)
@@ -130,14 +120,11 @@ closed-loop control interrrupts chains
                 - add edges to blobbables
                 - subtract non-nodes and node-edges via distance field?
             - convex hull ?
-        - offset connections?
-
-
+        - offset connections?  
 - [~] delete edges / nodes gracefully
     - for now just clear everything
-- [~] visualize self-connection with loop arrow
+- [~] visualize self-connection with loop arrow  
     - [x] using circle around node for now
-
 
 # Bonus Features
 - [ ] nodes wiggle to show correlation :)
@@ -190,32 +177,31 @@ or should the graph and adjmat simply be synced?
 
 ---------------
 
-degree
+degree: 
 
-in-degree (r)
-out-degree (b)
-betweenness (mediator - G) (more complicated)
+in-degree (r)  
+out-degree (b)  
+betweenness (mediator - G) (more complicated)  
 
 
 ------
-# interesting circuits
-
-- e->a->b->d
-- c->b
+# interesting circuits 
+e->a->b->d  
+c->b  
 
 big fork:
-- a->b->c->d
-- a->j->i->h
+a->b->c->d  
+a->j->i->h  
 
 big collider
-- h->i->j->a
-- d->c->b->a
+h->i->j->a  
+d->c->b->a  
 
 -----
-- a->j
-- b->e
-- c->e
-- f->e,h,j
-- g->g,h
-- i->d
-- j->c,e
+a->j  
+b->e  
+c->e  
+f->e,h,j  
+g->g,h  
+i->d  
+j->c,e  
