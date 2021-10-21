@@ -1,6 +1,6 @@
 # [circuit-visualizer-p5](https://awillats.github.io/circuit-visualizer-p5/)
 
-🚧  Work in progress 🚧 
+🚧  Work in progress 🚧   
 Experimental visualizer for studying networks / graphs / circuits and properties of their adjacency matrices.
 The big-picture goal for this project is to inform how best to stimulate neural circuits in order to infer their connectivity.
 
@@ -8,8 +8,9 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 - clicking the adjacency matrix
 - moving nodes around (`m`)
 - typing new circuits into the text field
+![demo circuit](imgs/spiral_circuit.png)
 
-# Keyboard commands: ⌨️
+# Keyboard Commands: ⌨️
 ## Editting modes
 `n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge 
 `m`: enter "`m`ove" mode, drag nodes to reposition them 
@@ -37,7 +38,7 @@ The big-picture goal for this project is to inform how best to stimulate neural 
         - will also remove redundant connections!
     - clearMat()
 
-## Similar frameworks:
+## Similar Frameworks:
 - [xcorr-visualzier-p5](https://github.com/awillats/xcorr-visualizer-p5)
     - improves on visualizing outputs of nodes
 - [NetworkX](https://networkx.org/documentation/stable/auto_examples/index.html#javascript)
@@ -47,7 +48,7 @@ The big-picture goal for this project is to inform how best to stimulate neural 
     - has lots of layout options, including "force atlats"
 - Cytoscape
 -----
-# Early findings: 🔍
+# Early Findings: 🔍
 
 closed-loop control of a node reveals a lot if
     node N has many (non-reciprocal) inputs
@@ -70,7 +71,7 @@ closed-loop control interrrupts chains
 - [ ] signal propogation for correlation inspection is "too correlated"
 
 
-# Feature requests: 🌠
+# Feature Requests: 🌠
 - [ ] should fork-shaped and collider shaped reachability be undirected?  
 - [ ] calculate "passes through node X" reachability
     - [ ] this is like a ternary reachability i suppose!
@@ -127,7 +128,7 @@ closed-loop control interrrupts chains
 - [~] visualize self-connection with loop arrow  
     - [x] using circle around node for now
 
-# Bonus Features 🎁
+# Bonus Features: 🎁
 - [ ] nodes wiggle to show correlation :)
 - [ ] visualize open-loop stim
 
@@ -163,7 +164,7 @@ closed-loop control interrrupts chains
     - or should the graph and adjmat simply be synced?
 
 ----------------------
-## Additional topics
+## Additional Topics: 
 - generally, should be leveraging graph theory more, for instance
     - idea of where to control can be tied back to "minimum cut" and "highly connected subgraphs"
     - maximal clique
@@ -172,8 +173,7 @@ closed-loop control interrrupts chains
     - out-degree (b)  
     - betweenness (mediator - G) (more complicated)  
 
-------
-# interesting circuits 🕸️ 
+# Interesting Circuits: 🕸️ 
 e->a->b->d  
 c->b  
 
