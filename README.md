@@ -9,7 +9,7 @@ The big-picture goal for this project is to inform how best to stimulate neural 
 - moving nodes around (`m`)
 - typing new circuits into the text field  
 
-![demo circuit](imgs/spiral_circuit.png  | width=250)
+<img src="https://github.com/awillats/circuit-visualizer-p5/blob/main/imgs/spiral_circuit.png" width="250" height="250">
 
 # Keyboard Commands: ⌨️
 ## Editting modes
