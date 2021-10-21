@@ -1,21 +1,50 @@
 # circuit-visualizer-p5
 
-the force distribution piece of this is a mess
+🚧  Work in progress 🚧 
+Experimental visualizer for studying networks / graphs / circuits and properties of their adjacency matrices.
+The big-picture goal for this project is to inform how best to stimulate neural circuits in order to infer their connectivity.
 
-may want links to have forces act on them in future
+Try:
+- clicking the adjacency matrix
+- moving nodes around (`m`)
+- typing new circuits into the text field
 
-could add "angular attractors", i.e. attract individual nodes to an angle from the center, for default ordering of nodes
+# Keyboard commands:
+## Editting modes
+`n`: enter "add `n`ew edges" editing mode, click a node and drag to another to connect them, do the same again to remove an edge
+`m`: enter "`m`ove" mode, drag nodes to reposition them
+`o`: enter "`o`pen-loop stimulation mode", clicking on a node delivers stimulation
+## Display layers
+`s`: toggle showing edges
+`r`: toggle showing indirect connections
+`w`: `w`iggle nodes
 
-will connect "reachability" highlighting to matrix view
+`x`: e`x`port graph to text field
+`<space>`: create a new random, sparse network
 
+# Completed Features:
+    - graph import from text field
+        - can use bidirectional arrows <->
+        - and multi input multi output lines a,b,c<->d,e
+    - graph export to text field
+    - toggle directional edges! (with s)
+    - highlight edges from a second adjacency matrix
+    - basic binary matrix reps
+    - can import connections from binary string (check order / convention)
+    - can bitshift to "rotate connections"
+    - can toggle connections via adj mat
+    - can add connections via drag arrows
+        - will also remove redundant connections!
+    - clearMat()
 
-------------
+## Similar frameworks:
+- [NetworkX](https://networkx.org/documentation/stable/auto_examples/index.html#javascript)
+- [Gephi](https://youtu.be/371n3Ye9vVo)
+    gephi network datasets, could be scanned for candidate networks to ID
+    - https://github.com/gephi/gephi/wiki/Datasets
+    - has lots of layout options, including "force atlats"
 
-have simple circuit generation lay nodes out in a static ring
-
-should one unified representation be managed (i.e. adjMat?)
-or should the graph and adjmat simply be synced?
-
+- Cytoscape
 -----
 # Findings !
 
@@ -109,20 +138,6 @@ closed-loop control interrrupts chains
 - [~] visualize self-connection with loop arrow
     - [x] using circle around node for now
 
-# Completed Features:
-    - graph import from text field
-        - can use bidirectional arrows <->
-        - and multi input multi output lines a,b,c<->d,e
-    - graph export to text field
-    - toggle directional edges! (with s)
-    - highlight edges from a second adjacency matrix
-    - basic binary matrix reps
-    - can import connections from binary string (check order / convention)
-    - can bitshift to "rotate connections"
-    - can toggle connections via adj mat
-    - can add connections via drag arrows
-        - will also remove redundant connections!
-    - clearMat()
 
 # Bonus Features
 - [ ] nodes wiggle to show correlation :)
@@ -150,20 +165,28 @@ closed-loop control interrrupts chains
 
 - [ ] duplicate edge protection (have collection of children be Sets)
 
+## Additional caveats: 
+
+the force distribution piece of this is a mess
+
+may want links to have forces act on them in future
+
+could add "angular attractors", i.e. attract individual nodes to an angle from the center, for default ordering of nodes
+
+will connect "reachability" highlighting to matrix view
+
+
+have simple circuit generation lay nodes out in a static ring
+
+should one unified representation be managed (i.e. adjMat?)
+or should the graph and adjmat simply be synced?
 
 ----------------------
 ## Additional topics
 - generally, should be leveraging graph theory more, for instance
     - idea of where to control can be tied back to "minimum cut" and "highly connected subgraphs"
     - maximal clique
-## Similar frameworks:
-- [NetworkX](https://networkx.org/documentation/stable/auto_examples/index.html#javascript)
-- [Gephi](https://youtu.be/371n3Ye9vVo)
-    gephi network datasets, could be scanned for candidate networks to ID
-    - https://github.com/gephi/gephi/wiki/Datasets
-    - has lots of layout options, including "force atlats"
 
-- Cytoscape
 
 ---------------
 
